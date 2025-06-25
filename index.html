@@ -59,6 +59,9 @@
     }
 
     /* General Body Styling */
+    html {
+        scroll-behavior: smooth;
+    }
     body {
       font-family: 'Lato', Arial, sans-serif;
       margin: 0;
@@ -182,6 +185,7 @@
     .modal-content p {
         line-height: 1.8;
         font-size: 1.0em;
+        white-space: pre-wrap; /* Allows line breaks in the text */
     }
     
     /* Header & Footer */
@@ -480,6 +484,60 @@
       .process-step { flex-direction: column; text-align: center; }
       .modal-content { margin: 20% auto; width: 90%; }
     }
+    
+    /* --- Styles for Appointment Form --- */
+    .form-group {
+        margin-bottom: 1.2rem;
+    }
+    .form-group label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: 600;
+        color: var(--secondary-color);
+    }
+    #appointment-form input[type="text"],
+    #appointment-form input[type="number"],
+    #appointment-form select,
+    #appointment-form textarea {
+        width: 100%;
+        padding: 12px;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        font-family: 'Lato', sans-serif;
+        font-size: 1em;
+        box-sizing: border-box;
+        transition: border-color 0.3s, box-shadow 0.3s;
+    }
+    #appointment-form input[type="text"]:focus,
+    #appointment-form input[type="number"]:focus,
+    #appointment-form select:focus,
+    #appointment-form textarea:focus {
+        outline: none;
+        border-color: var(--primary-color);
+        box-shadow: 0 0 5px rgba(0, 105, 92, 0.3);
+    }
+    .form-group .radio-group {
+        display: flex;
+        gap: 20px;
+        align-items: center;
+    }
+    .form-group .radio-group label {
+        font-weight: normal;
+        margin-bottom: 0;
+        color: var(--text-color);
+    }
+    .form-group .radio-group input[type="radio"] {
+        margin-right: 5px;
+    }
+    #appointment-form select {
+        appearance: none;
+        background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20width%3D%2220%22%20height%3D%2220%22%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%3E%3Cpath%20d%3D%22M5%208l5%205%205-5z%22%20fill%3D%22%234a4a4a%22/%3E%3C/svg%3E');
+        background-repeat: no-repeat;
+        background-position: right 15px center;
+        background-size: 12px;
+        cursor: pointer;
+    }
+
 
     /* --- CSS FOR ASSESSMENT QUIZ --- */
     :root {
@@ -529,17 +587,17 @@
         border-top: 1px solid #eee;
         padding-top: 1.5rem;
     }
-    .form-group {
+    .user-info-form .form-group {
         margin-bottom: 1rem;
     }
-    .form-group label {
+    .user-info-form .form-group label {
         display: block;
         margin-bottom: 5px;
         font-weight: 600;
         color: var(--secondary-color);
     }
-    .form-group input[type="text"],
-    .form-group input[type="number"] {
+    .user-info-form input[type="text"],
+    .user-info-form input[type="number"] {
         width: 100%;
         padding: 10px;
         border: 1px solid #ccc;
@@ -547,12 +605,12 @@
         font-family: 'Poppins', sans-serif;
         box-sizing: border-box;
     }
-    .form-group .radio-group {
+    .user-info-form .radio-group {
         display: flex;
         gap: 20px;
         align-items: center;
     }
-    .form-group .radio-group label {
+    .user-info-form .radio-group label {
         font-weight: normal;
         margin-bottom: 0;
         color: var(--text-color);
@@ -702,7 +760,7 @@
         #results-greeting, .dominant-result p, .dominant-result h3, .percentage-summary p { color: #000000 !important; }
         .dominant-result { border-left: 5px solid #000; background-color: #f0f0f0; page-break-inside: avoid; }
         .chart-container { page-break-inside: avoid; }
-        .hamburger-menu, .side-nav, footer, .close-modal, .results-buttons, .disclaimer { display: none !important; }
+        .hamburger-menu, .side-nav, footer, .close-modal, .results-buttons, .disclaimer, #appointment-section, .button-container a.btn { display: none !important; }
         main, header, section { display: none; } /* Hide all other content when printing quiz */
         #assessment-modal { display: block !important; position: static; }
     }
@@ -719,6 +777,7 @@
 <div id="side-nav" class="side-nav">
   <a href="javascript:void(0)" class="close-btn" id="close-nav">&times;</a>
   <a href="#" class="nav-link" data-content="about">About Us</a>
+  <a href="#" class="nav-link" data-modal-target="appointment-modal">Book Appointment</a>
   <a href="#" class="nav-link" data-content="ayurveda">What is Ayurveda</a>
   <a href="#" class="nav-link" data-content="prakriti">What is Prakriti, Saara, and Dosha</a>
   <a href="#" class="nav-link" data-content="mission">My Mission</a>
@@ -920,9 +979,9 @@
     <h2>Ready to Begin?</h2>
     <p>Contact me to book your initial consultation. All consultations are held online.</p>
     <div class="button-container">
-        <a href="https://api.whatsapp.com/send/?phone=%2B916364514741&text=Hello!%20I'm%20interested%20in%20a%20consultation%20from%20SattvaGriha." class="btn whatsapp">
-          <i class="fab fa-whatsapp"></i>Book on WhatsApp
-        </a>
+        <button class="btn" data-modal-target="appointment-modal">
+            <i class="fa-solid fa-calendar-check"></i> Book an Appointment
+        </button>
         <a href="tel:+916364514741" class="btn">
           <i class="fas fa-phone"></i>Call Now
         </a>
@@ -940,7 +999,7 @@
 
 <div id="info-modal" class="modal">
   <div class="modal-content">
-    <span class="close-modal" id="close-modal">&times;</span>
+    <span class="close-modal">&times;</span>
     <h2 id="modal-title"></h2>
     <p id="modal-text"></p>
   </div>
@@ -948,7 +1007,7 @@
 
 <div id="assessment-modal" class="modal">
     <div class="modal-content" style="padding:0; max-width: 650px;">
-        <span class="close-modal" id="close-assessment-modal">&times;</span>
+        <span class="close-modal">&times;</span>
         <div class="quiz-container">
             <div id="welcome-screen">
                 <div class="quiz-header">
@@ -1038,6 +1097,58 @@
     </div>
 </div>
 
+<div id="appointment-modal" class="modal">
+  <div class="modal-content">
+    <span class="close-modal">&times;</span>
+    <h2 style="text-align:center;">Book Your Appointment</h2>
+    <p style="text-align:center; margin-top:-15px; margin-bottom:25px; white-space:normal;">Fill out the form below. Your details will be sent to me on WhatsApp for confirmation.</p>
+    <form id="appointment-form">
+      <div class="form-group">
+        <label for="appt-name">Full Name:</label>
+        <input type="text" id="appt-name" name="name" required>
+      </div>
+      <div class="form-group">
+          <label>Gender:</label>
+          <div class="radio-group">
+              <input type="radio" id="appt-male" name="gender" value="Male" required>
+              <label for="appt-male">Male</label>
+              <input type="radio" id="appt-female" name="gender" value="Female">
+              <label for="appt-female">Female</label>
+              <input type="radio" id="appt-other" name="gender" value="Other">
+              <label for="appt-other">Other</label>
+          </div>
+      </div>
+      <div class="form-group">
+        <label for="appt-age">Age:</label>
+        <input type="number" id="appt-age" name="age" required min="1">
+      </div>
+      <div class="form-group">
+          <label for="appt-package">Select a Plan (Optional):</label>
+          <select id="appt-package" name="package">
+              <option value="Not Selected">-- Select a plan if applicable --</option>
+              <option value="Initial Consultation (₹49 / $2)">Initial Consultation (₹49 / $2)</option>
+              <option value="General Consultation (Monthly - ₹149 / $5)">General Consultation (Monthly - ₹149 / $5)</option>
+              <option value="General Consultation (Yearly - ₹999 / $49)">General Consultation (Yearly - ₹999 / $49)</option>
+              <option value="Yoga, Nutrition & Supportive Care (Monthly - ₹199 / $9)">Yoga, Nutrition & Supportive Care (Monthly - ₹199 / $9)</option>
+              <option value="Yoga, Nutrition & Supportive Care (Yearly - ₹1499 / $89)">Yoga, Nutrition & Supportive Care (Yearly - ₹1499 / $89)</option>
+              <option value="Just a General Query">Just a General Query</option>
+          </select>
+      </div>
+      <div class="form-group">
+        <label for="appt-reason">Reason for Consultation (Your health issue):</label>
+        <textarea id="appt-reason" name="reason" rows="4" required></textarea>
+      </div>
+      <div class="form-group">
+        <label for="appt-other-details">Any other details? (e.g., duration of illness, past treatments):</label>
+        <textarea id="appt-other-details" name="other_details" rows="2"></textarea>
+      </div>
+      <div class="button-container">
+          <button type="submit" class="btn whatsapp"><i class="fab fa-whatsapp"></i> Submit via WhatsApp</button>
+      </div>
+    </form>
+  </div>
+</div>
+
 
 <script>
   document.addEventListener("DOMContentLoaded", function() {
@@ -1047,7 +1158,6 @@
       entries.forEach(entry => {
         if (entry.isIntersecting) {
           entry.target.classList.add('visible');
-          observer.unobserve(entry.target);
         }
       });
     }, {
@@ -1067,6 +1177,13 @@
           panel.style.maxHeight = null;
           panel.classList.remove("open");
         } else {
+          accordionBtns.forEach(btn => {
+              if (btn !== this) {
+                  btn.classList.remove('active');
+                  btn.nextElementSibling.style.maxHeight = null;
+                  btn.nextElementSibling.classList.remove('open');
+              }
+          });
           panel.style.maxHeight = panel.scrollHeight + "px";
           panel.classList.add("open");
         }
@@ -1087,21 +1204,29 @@
 
     /* --- Navigation and Modal Javascript --- */
     const modalData = {
-      'about': { title: 'About Us', text: `Welcome to SattvaGriha...` },
-      'ayurveda': { title: 'What is Ayurveda?', text: `Ayurveda is a 5,000-year-old system...` },
-      'prakriti': { title: 'What is Prakriti, Saara, and Dosha?', text: `Prakriti is your unique body constitution...` },
-      'mission': { title: 'My Mission', text: `My mission through SattvaGriha is to make the timeless wisdom of Ayurveda accessible...` }
+      'about': { 
+          title: 'About Us', 
+          text: `Welcome to SattvaGriha! I’m Laxminarayan, a BAMS student (graduating 2028) and a passionate Ayurveda practitioner-in-training. At SattvaGriha, my focus is on blending the timeless, ancient wisdom of Ayurveda with the realities of modern living to offer you a path to personalized healing.\n\nI believe in a holistic approach, delving deep into your unique body constitution (Prakriti) and the quality of your tissues (Saara) to create a tailored wellness plan. My goal is to empower you with the knowledge and tools to achieve lasting health and vitality.\n\nFor any query, reach us at sattvagriha@gmail.com.` 
+      },
+      'ayurveda': { 
+          title: 'What is Ayurveda?', 
+          text: `Ayurveda, often called the "science of life," is one of the world's oldest holistic healing systems, originating in India over 5,000 years ago. It's based on the belief that health and wellness depend on a delicate balance between the mind, body, and spirit.\n\nAyurveda is not just about treating disease; it's a comprehensive lifestyle guide that promotes longevity and vitality through diet, herbal remedies, yoga, meditation, and personalized daily routines. Its primary goal is to cleanse the body of impurities (ama) and restore balance to the body's fundamental energies (doshas).` 
+      },
+      'prakriti': { 
+          title: 'What is Prakriti, Saara, and Dosha?', 
+          text: `In Ayurveda, these three concepts are fundamental to understanding your unique makeup.\n\n• Doshas (Vata, Pitta, Kapha): These are the three primary life forces or energies that govern all physiological and psychological functions in the body. Everyone has a unique mix of the three, with one or two being dominant.\n\n• Prakriti: This is your unique, inherent constitution, determined at the moment of conception. It represents your natural balance of the doshas and remains constant throughout your life. Knowing your Prakriti helps in understanding your predispositions, strengths, and weaknesses, forming the basis for personalized diet and lifestyle choices.\n\n• Saara: This refers to the optimal quality, or essence, of your seven bodily tissues (Dhatus). A strong Saara indicates excellent health, immunity, and vitality. Assessing Saara helps in understanding the overall strength and resilience of your body.` 
+      },
+      'mission': { 
+          title: 'My Mission', 
+          text: `My mission through SattvaGriha is to make the timeless wisdom of Ayurveda accessible and practical for everyone. I aim to demystify its principles and provide clear, actionable guidance that you can integrate into your daily life.\n\nBy focusing on root-cause analysis and personalized care based on Prakriti and Saara, I strive to help you move beyond temporary fixes and cultivate a state of true, sustainable well-being. My commitment is to be your dedicated guide on your journey toward a balanced, healthier, and more vibrant life.` 
+      }
     };
 
     const hamburger = document.getElementById('hamburger-menu');
     const sideNav = document.getElementById('side-nav');
     const closeNavBtn = document.getElementById('close-nav');
-    const navLinks = document.querySelectorAll('.nav-link');
-    const infoModal = document.getElementById('info-modal');
-    const modalTitle = document.getElementById('modal-title');
-    const modalText = document.getElementById('modal-text');
-    const closeModalBtn = document.getElementById('close-modal');
-
+    const navLinks = document.querySelectorAll('.side-nav .nav-link');
+    
     function openNav() {
         sideNav.style.width = "280px";
         hamburger.classList.add('active');
@@ -1121,21 +1246,97 @@
     
     function openInfoModal(contentKey) {
       const content = modalData[contentKey];
-      modalTitle.textContent = content.title;
-      modalText.textContent = content.text;
-      infoModal.style.display = "block";
+      const infoModal = document.getElementById('info-modal');
+      const modalTitle = document.getElementById('modal-title');
+      const modalText = document.getElementById('modal-text');
+      if (content && infoModal) {
+          modalTitle.textContent = content.title;
+          modalText.textContent = content.text;
+          infoModal.style.display = "block";
+      }
     }
+    
     navLinks.forEach(link => {
-      link.addEventListener('click', function(e) {
-        e.preventDefault();
-        const contentKey = this.getAttribute('data-content');
-        openInfoModal(contentKey);
-        closeNav();
-      });
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            const contentKey = this.getAttribute('data-content');
+            const modalTarget = this.getAttribute('data-modal-target');
+
+            if (contentKey) { 
+                openInfoModal(contentKey);
+            } else if (modalTarget) {
+                const targetModal = document.getElementById(modalTarget);
+                if (targetModal) targetModal.style.display = 'block';
+            }
+            closeNav();
+        });
     });
-    closeModalBtn.addEventListener('click', () => { infoModal.style.display = "none"; });
+
+    /* --- GENERAL MODAL CONTROLS (Open, Close) --- */
+    // Open modal via data-modal-target attribute
+    document.querySelectorAll('[data-modal-target]').forEach(trigger => {
+        trigger.addEventListener('click', () => {
+            const modalId = trigger.getAttribute('data-modal-target');
+            const modal = document.getElementById(modalId);
+            if (modal) {
+                modal.style.display = 'block';
+            }
+        });
+    });
+    // Close modal via .close-modal class
+    document.querySelectorAll('.modal .close-modal').forEach(closeBtn => {
+        closeBtn.addEventListener('click', () => {
+            closeBtn.closest('.modal').style.display = 'none';
+        });
+    });
+    // Close modal on outside click
+    window.addEventListener('click', function(event) {
+        if (event.target.classList.contains('modal')) {
+            event.target.style.display = "none";
+        }
+    });
+
+    /* --- Appointment Form Logic --- */
+    const appointmentForm = document.getElementById('appointment-form');
+    if (appointmentForm) {
+        appointmentForm.addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const genderEl = document.querySelector('input[name="gender"]:checked');
+            if (!genderEl) {
+                alert('Please select your gender.');
+                return;
+            }
+
+            const name = document.getElementById('appt-name').value;
+            const age = document.getElementById('appt-age').value;
+            const gender = genderEl.value;
+            const selectedPackage = document.getElementById('appt-package').value;
+            const reason = document.getElementById('appt-reason').value;
+            const otherDetails = document.getElementById('appt-other-details').value;
+
+            let message = `*New Appointment Request from SattvaGriha Website*\n\n`;
+            message += `*Name:* ${name}\n`;
+            message += `*Age:* ${age}\n`;
+            message += `*Gender:* ${gender}\n`;
+            message += `*Selected Plan:* ${selectedPackage}\n\n`;
+            message += `*Reason for Consultation:*\n${reason}\n`;
+
+            if (otherDetails) {
+                message += `\n*Other Details:*\n${otherDetails}\n`;
+            }
+
+            const phoneNumber = '916364514741';
+            const encodedMessage = encodeURIComponent(message);
+            const whatsappUrl = `https://api.whatsapp.com/send/?phone=${phoneNumber}&text=${encodedMessage}`;
+
+            window.open(whatsappUrl, '_blank');
+            document.getElementById('appointment-modal').style.display = 'none'; // Close modal after submission
+        });
+    }
 
     /* --- ASSESSMENT QUIZ LOGIC --- */
+    // (This extensive logic remains unchanged)
     const questions = [
         { text: "My body is naturally thin and lightweight.", type: 'Prakriti', category: 'vata' }, { text: "My skin is usually dry, rough, and cool.", type: 'Prakriti', category: 'vata' }, { text: "I tend to have variable digestion and irregular appetite.", type: 'Prakriti', category: 'vata' }, { text: "My energy comes in bursts and I tire easily.", type: 'Prakriti', category: 'vata' }, { text: "I tend to worry, feel anxious or nervous often.", type: 'Prakriti', category: 'vata' }, { text: "My body is medium in build and feels warm.", type: 'Prakriti', category: 'pitta' }, { text: "I have a strong appetite and feel uncomfortable when meals are missed.", type: 'Prakriti', category: 'pitta' }, { text: "I tend to get hot easily and prefer cool environments.", type: 'Prakriti', category: 'pitta' }, { text: "I get irritated or angry quickly but calm down fast.", type: 'Prakriti', category: 'pitta' }, { text: "I have sharp intellect and strong concentration.", type: 'Prakriti', category: 'pitta' }, { text: "My body is broad, heavy, and gains weight easily.", type: 'Prakriti', category: 'kapha' }, { text: "My skin is smooth, cool, moist, and pale.", type: 'Prakriti', category: 'kapha' }, { text: "I am calm, stable, and emotionally balanced.", type: 'Prakriti', category: 'kapha' }, { text: "I sleep deeply and find it hard to wake up early.", type: 'Prakriti', category: 'kapha' }, { text: "I take time to learn but have excellent long-term memory.", type: 'Prakriti', category: 'kapha' },
         { text: "My skin appears naturally soft, glowing, and well-moisturized.", type: 'Saara', category: 'rasa' }, { text: "I feel mentally content and emotionally joyful.", type: 'Saara', category: 'rasa' }, { text: "I rarely feel emotionally unstable or irritable.", type: 'Saara', category: 'rasa' }, { text: "My lips, tongue, and palms have a healthy reddish tint.", type: 'Saara', category: 'rakta' }, { text: "I have high energy, endurance, and courage.", type: 'Saara', category: 'rakta' }, { text: "I recover quickly from cuts, wounds, or blood loss.", type: 'Saara', category: 'rakta' }, { text: "My muscles are firm, strong, and well-developed.", type: 'Saara', category: 'mamsa' }, { text: "I have good physical strength and rarely feel weak.", type: 'Saara', category: 'mamsa' }, { text: "I can perform physical labor or exercise with endurance.", type: 'Saara', category: 'mamsa' }, { text: "My body is soft, plump, and well-cushioned.", type: 'Saara', category: 'meda' }, { text: "I have a pleasing and melodious voice.", type: 'Saara', category: 'meda' }, { text: "My skin is smooth and unctuous (oily).", type: 'Saara', category: 'meda' }, { text: "My teeth are strong, white, and even.", type: 'Saara', category: 'asthi' }, { text: "My bones are strong, and I have good posture.", type: 'Saara', category: 'asthi' }, { text: "My nails grow well and are hard and glossy.", type: 'Saara', category: 'asthi' }, { text: "My eyes are large, clear, and attractive.", type: 'Saara', category: 'majja' }, { text: "I have good intellectual capacity and sharp memory.", type: 'Saara', category: 'majja' }, { text: "My joints are well-lubricated and rarely feel stiff or painful.", type: 'Saara', category: 'majja' }, { text: "My face has a natural glow and vitality.", type: 'Saara', category: 'shukra' }, { text: "I have good sexual health, stamina, and fertility.", type: 'Saara', category: 'shukra' }, { text: "I rarely fall sick and recover quickly from illness.", type: 'Saara', category: 'shukra' }, { text: "I am naturally truthful, kind, and peaceful.", type: 'Saara', category: 'sattva' }, { text: "I am emotionally balanced even during difficulties.", type: 'Saara', category: 'sattva' }, { text: "I show compassion toward others and enjoy helping.", type: 'Saara', category: 'sattva' },
@@ -1145,11 +1346,9 @@
     let maxScores = {};
     let userName = '';
     let prakritiChartInstance, saaraChartInstance;
-    let fullResultsText = ''; // NEW: To store the formatted results for WhatsApp
-
+    let fullResultsText = ''; 
     const assessmentModal = document.getElementById('assessment-modal');
     const startAssessmentBtn = document.getElementById('start-assessment-btn');
-    const closeAssessmentBtn = document.getElementById('close-assessment-modal');
     const welcomeScreen = document.getElementById('welcome-screen');
     const quizScreen = document.getElementById('quiz-screen');
     const resultsContainer = document.getElementById('results-container');
@@ -1160,11 +1359,12 @@
     const progressBar = document.getElementById('progress-bar');
     const restartBtn = document.getElementById('restart-btn');
     const printBtn = document.getElementById('print-btn');
-    const whatsappResultsBtn = document.getElementById('whatsapp-results-btn'); // NEW
+    const whatsappResultsBtn = document.getElementById('whatsapp-results-btn');
     const resultsGreetingEl = document.getElementById('results-greeting');
     const prakritiPercentagesEl = document.getElementById('prakriti-percentages');
     const saaraPercentagesEl = document.getElementById('saara-percentages');
     const startQuizBtn = document.getElementById('start-quiz-btn');
+    if(startAssessmentBtn) startAssessmentBtn.setAttribute('data-modal-target', 'assessment-modal');
 
     function initializeScores() {
         scores = { prakriti: { vata: 0, pitta: 0, kapha: 0 }, saara: { rasa: 0, rakta: 0, mamsa: 0, meda: 0, asthi: 0, majja: 0, shukra: 0, sattva: 0 }};
@@ -1202,27 +1402,21 @@
     
     function showQuestion() {
         if (currentQuestionIndex >= questions.length) { showResults(); return; }
-        
         questionTitleEl.classList.remove('question-animated');
         optionsContainerEl.classList.remove('question-animated');
-        
         const question = questions[currentQuestionIndex];
-        
         setTimeout(() => {
             sectionTitleEl.textContent = `Question ${currentQuestionIndex + 1} / ${questions.length} — ${question.type} Assessment`;
             questionTitleEl.textContent = question.text;
-            
             optionsContainerEl.innerHTML = `
                 <button class="option-btn" onclick="recordAnswer(1.0)">Very Much / Always</button>
                 <button class="option-btn" onclick="recordAnswer(0.66)">Moderately / Often</button>
                 <button class="option-btn" onclick="recordAnswer(0.33)">A Little / Sometimes</button>
                 <button class="option-btn" onclick="recordAnswer(0.0)">Not at All / Rarely</button>
             `;
-            
             questionTitleEl.classList.add('question-animated');
             optionsContainerEl.classList.add('question-animated');
         }, 50);
-
         progressBar.style.width = `${((currentQuestionIndex) / questions.length) * 100}%`;
     }
 
@@ -1230,14 +1424,11 @@
         const question = questions[currentQuestionIndex];
         const typeKey = question.type.toLowerCase();
         scores[typeKey][question.category] += scoreValue;
-        
         currentQuestionIndex++;
         showQuestion();
     }
     
-    // UPDATED: Now populates the fullResultsText variable for WhatsApp
     function calculateAndDisplayResults() {
-        // --- Prakriti ---
         const prakritiScores = scores.prakriti;
         const prakritiPercentages = {};
         let prakritiSummaryHtml = '<h3>Percentage Score:</h3>';
@@ -1251,7 +1442,6 @@
         prakritiPercentagesEl.innerHTML = prakritiSummaryHtml;
         createPieChart('prakriti-chart', prakritiPercentages, 'Prakriti Distribution', ['#4e79a7', '#f28e2b', '#59a14f']);
 
-        // --- Saara ---
         const saaraScores = scores.saara;
         const saaraPercentages = {};
         let saaraSummaryHtml = '<h3>Percentage Score:</h3>';
@@ -1267,22 +1457,22 @@
         saaraPercentagesEl.innerHTML = saaraSummaryHtml;
         createPieChart('saara-chart', saaraPercentages, 'Saara Distribution', ['#e15759', '#76b7b2', '#edc948', '#ff9da7', '#9c755f', '#bab0ac', '#f17f42', '#b07aa1']);
 
-        // --- NEW: Prepare text for WhatsApp ---
-        fullResultsText = `Hello! I've completed the assessment on SattvaGriha for *${userName}*.\n\nHere are my results:\n\n`;
-        fullResultsText += `*Dominant Prakriti (Constitution):* ${dominantPrakriti}\n`;
-        fullResultsText += `*Dominant Saara (Tissue Essence):* ${dominantSaara}\n\n`;
-        fullResultsText += `--- DETAILED PERCENTAGES ---\n`;
-        fullResultsText += `*Prakriti Scores:*\n`;
+        let resultsForWhatsapp = `Hello! I've completed the assessment on SattvaGriha for *${userName}*.\n\nHere are my results:\n\n`;
+        resultsForWhatsapp += `*Dominant Prakriti (Constitution):* ${dominantPrakriti}\n`;
+        resultsForWhatsapp += `*Dominant Saara (Tissue Essence):* ${dominantSaara}\n\n`;
+        resultsForWhatsapp += `--- DETAILED PERCENTAGES ---\n`;
+        resultsForWhatsapp += `*Prakriti Scores:*\n`;
         for (const dosha in prakritiPercentages) {
-            fullResultsText += `  - ${dosha.charAt(0).toUpperCase() + dosha.slice(1)}: ${prakritiPercentages[dosha].toFixed(1)}%\n`;
+            resultsForWhatsapp += `  - ${dosha.charAt(0).toUpperCase() + dosha.slice(1)}: ${prakritiPercentages[dosha].toFixed(1)}%\n`;
         }
-        fullResultsText += `\n*Saara Scores:*\n`;
+        resultsForWhatsapp += `\n*Saara Scores:*\n`;
         for (const saara in saaraPercentages) {
              if (maxScores.saara[saara] > 0) {
-                fullResultsText += `  - ${saara.charAt(0).toUpperCase() + saara.slice(1)}: ${saaraPercentages[saara].toFixed(1)}%\n`;
+                resultsForWhatsapp += `  - ${saara.charAt(0).toUpperCase() + saara.slice(1)}: ${saaraPercentages[saara].toFixed(1)}%\n`;
              }
         }
-        fullResultsText += `\nI would like to book a consultation to discuss these results further. Thank you!`;
+        resultsForWhatsapp += `\nI would like to book a consultation to discuss these results further. Thank you!`;
+        fullResultsText = resultsForWhatsapp;
     }
 
     function findDominant(percentageObject) {
@@ -1314,25 +1504,20 @@
         resultsGreetingEl.textContent = `Dear ${userName}, your assessment results are:`;
         calculateAndDisplayResults();
     }
-
-    userInfoForm.addEventListener('submit', startQuiz);
-    restartBtn.addEventListener('click', showWelcomeScreen);
-    printBtn.addEventListener('click', () => { window.print(); });
-    startAssessmentBtn.addEventListener('click', () => { assessmentModal.style.display = 'block'; showWelcomeScreen(); });
-    closeAssessmentBtn.addEventListener('click', () => { assessmentModal.style.display = 'none'; });
-
-    // NEW: Event listener for the WhatsApp share button
-    whatsappResultsBtn.addEventListener('click', () => {
+    
+    if(userInfoForm) userInfoForm.addEventListener('submit', startQuiz);
+    if(restartBtn) restartBtn.addEventListener('click', () => {
+        assessmentModal.style.display = 'block';
+        showWelcomeScreen();
+    });
+    if(printBtn) printBtn.addEventListener('click', () => { window.print(); });
+    if(whatsappResultsBtn) whatsappResultsBtn.addEventListener('click', () => {
         const phoneNumber = '916364514741';
         const encodedMessage = encodeURIComponent(fullResultsText);
         const whatsappUrl = `https://api.whatsapp.com/send/?phone=${phoneNumber}&text=${encodedMessage}`;
         window.open(whatsappUrl, '_blank');
     });
 
-    window.addEventListener('click', function(event) {
-      if (event.target == infoModal) { infoModal.style.display = "none"; }
-      if (event.target == assessmentModal) { assessmentModal.style.display = "none"; }
-    });
   });
 </script>
 
