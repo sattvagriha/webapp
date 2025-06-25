@@ -487,7 +487,7 @@
     
     /* --- Styles for Appointment Form --- */
     .form-group {
-        margin-bottom: 1.2rem;
+        margin-bottom: 1.0rem;
     }
     .form-group label {
         display: block;
@@ -536,6 +536,16 @@
         background-position: right 15px center;
         background-size: 12px;
         cursor: pointer;
+    }
+    #fee-text {
+        font-size: 1.2em; 
+        font-weight: bold; 
+        color: var(--primary-color); 
+        margin: 0; 
+        padding: 10px; 
+        background-color: #e8f5e9; 
+        border-radius: 8px;
+        text-align: center;
     }
 
 
@@ -970,7 +980,7 @@
     <h2>Know Your Body Constitution</h2>
     <p>Discover your unique Ayurvedic Prakriti (body type) and Saara (tissue quality) with our guided assessment. Understanding your constitution is the first step towards personalized health and wellness.</p>
     <div class="button-container">
-        <button id="start-assessment-btn" class="btn">
+        <button class="btn" data-modal-target="assessment-modal">
           <i class="fa-solid fa-flask-vial"></i> Start Assessment
         </button>
     </div>
@@ -1101,7 +1111,7 @@
   <div class="modal-content">
     <span class="close-modal">&times;</span>
     <h2 style="text-align:center;">Book Your Appointment</h2>
-    <p style="text-align:center; margin-top:-15px; margin-bottom:25px; white-space:normal;">Fill out the form below. Your details will be sent to me on WhatsApp for confirmation.</p>
+    <p style="text-align:center; margin-top:-15px; margin-bottom:25px; white-space:normal;">Please fill all the fields below. Your details will be sent to me on WhatsApp for confirmation.</p>
     <form id="appointment-form">
       <div class="form-group">
         <label for="appt-name">Full Name:</label>
@@ -1123,14 +1133,27 @@
         <input type="number" id="appt-age" name="age" required min="1">
       </div>
       <div class="form-group">
-          <label for="appt-package">Select a Plan (Optional):</label>
-          <select id="appt-package" name="package">
-              <option value="Not Selected">-- Select a plan if applicable --</option>
-              <option value="Initial Consultation (₹49 / $2)">Initial Consultation (₹49 / $2)</option>
-              <option value="General Consultation (Monthly - ₹149 / $5)">General Consultation (Monthly - ₹149 / $5)</option>
-              <option value="General Consultation (Yearly - ₹999 / $49)">General Consultation (Yearly - ₹999 / $49)</option>
-              <option value="Yoga, Nutrition & Supportive Care (Monthly - ₹199 / $9)">Yoga, Nutrition & Supportive Care (Monthly - ₹199 / $9)</option>
-              <option value="Yoga, Nutrition & Supportive Care (Yearly - ₹1499 / $89)">Yoga, Nutrition & Supportive Care (Yearly - ₹1499 / $89)</option>
+            <label>Nationality:</label>
+            <div class="radio-group">
+                <input type="radio" id="nat-indian" name="nationality" value="Indian" required>
+                <label for="nat-indian">Indian</label>
+                <input type="radio" id="nat-non-indian" name="nationality" value="Non-Indian">
+                <label for="nat-non-indian">Non-Indian</label>
+            </div>
+      </div>
+      <div class="form-group" id="fee-container" style="display: none;">
+            <label>Initial Consultation Fee:</label>
+            <p id="fee-text"></p>
+      </div>
+      <div class="form-group">
+          <label for="appt-package">Select a Plan:</label>
+          <select id="appt-package" name="package" required>
+              <option value="" disabled selected>-- Please select a plan --</option>
+              <option value="Initial Consultation Only">Initial Consultation Only</option>
+              <option value="General Consultation (Monthly)">General Consultation (Monthly)</option>
+              <option value="General Consultation (Yearly)">General Consultation (Yearly)</option>
+              <option value="Yoga, Nutrition & Supportive Care (Monthly)">Yoga, Nutrition & Supportive Care (Monthly)</option>
+              <option value="Yoga, Nutrition & Supportive Care (Yearly)">Yoga, Nutrition & Supportive Care (Yearly)</option>
               <option value="Just a General Query">Just a General Query</option>
           </select>
       </div>
@@ -1139,8 +1162,8 @@
         <textarea id="appt-reason" name="reason" rows="4" required></textarea>
       </div>
       <div class="form-group">
-        <label for="appt-other-details">Any other details? (e.g., duration of illness, past treatments):</label>
-        <textarea id="appt-other-details" name="other_details" rows="2"></textarea>
+        <label for="appt-other-details">Additional Details (illness duration, past treatments):</label>
+        <textarea id="appt-other-details" name="other_details" rows="2" required placeholder="Please provide relevant history or type N/A if not applicable."></textarea>
       </div>
       <div class="button-container">
           <button type="submit" class="btn whatsapp"><i class="fab fa-whatsapp"></i> Submit via WhatsApp</button>
@@ -1273,7 +1296,6 @@
     });
 
     /* --- GENERAL MODAL CONTROLS (Open, Close) --- */
-    // Open modal via data-modal-target attribute
     document.querySelectorAll('[data-modal-target]').forEach(trigger => {
         trigger.addEventListener('click', () => {
             const modalId = trigger.getAttribute('data-modal-target');
@@ -1283,13 +1305,11 @@
             }
         });
     });
-    // Close modal via .close-modal class
     document.querySelectorAll('.modal .close-modal').forEach(closeBtn => {
         closeBtn.addEventListener('click', () => {
             closeBtn.closest('.modal').style.display = 'none';
         });
     });
-    // Close modal on outside click
     window.addEventListener('click', function(event) {
         if (event.target.classList.contains('modal')) {
             event.target.style.display = "none";
@@ -1298,45 +1318,63 @@
 
     /* --- Appointment Form Logic --- */
     const appointmentForm = document.getElementById('appointment-form');
+    const nationalityRadios = document.querySelectorAll('input[name="nationality"]');
+    const feeContainer = document.getElementById('fee-container');
+    const feeText = document.getElementById('fee-text');
+    let consultationFee = '';
+
+    nationalityRadios.forEach(radio => {
+        radio.addEventListener('change', event => {
+            if (event.target.value === 'Indian') {
+                consultationFee = '₹49';
+            } else if (event.target.value === 'Non-Indian') {
+                consultationFee = '$2';
+            }
+            feeText.textContent = consultationFee;
+            feeContainer.style.display = 'block';
+        });
+    });
+
     if (appointmentForm) {
         appointmentForm.addEventListener('submit', function(event) {
             event.preventDefault();
 
-            const genderEl = document.querySelector('input[name="gender"]:checked');
-            if (!genderEl) {
-                alert('Please select your gender.');
-                return;
-            }
-
+            // Explicitly check required fields for better user feedback
             const name = document.getElementById('appt-name').value;
             const age = document.getElementById('appt-age').value;
-            const gender = genderEl.value;
+            const genderEl = document.querySelector('input[name="gender"]:checked');
+            const nationalityEl = document.querySelector('input[name="nationality"]:checked');
             const selectedPackage = document.getElementById('appt-package').value;
+            
+            if (!genderEl) { alert('Please select your gender.'); return; }
+            if (!nationalityEl) { alert('Please select your nationality.'); return; }
+            if (!selectedPackage) { alert('Please select a plan.'); return; }
+
+            const gender = genderEl.value;
+            const nationality = nationalityEl.value;
             const reason = document.getElementById('appt-reason').value;
             const otherDetails = document.getElementById('appt-other-details').value;
 
-            let message = `*New Appointment Request from SattvaGriha Website*\n\n`;
+            let message = `I want to book an appointment\n\nMy details are:\n`;
             message += `*Name:* ${name}\n`;
             message += `*Age:* ${age}\n`;
             message += `*Gender:* ${gender}\n`;
+            message += `*Nationality:* ${nationality}\n`;
+            message += `*Consultation Fee:* ${consultationFee}\n`;
             message += `*Selected Plan:* ${selectedPackage}\n\n`;
-            message += `*Reason for Consultation:*\n${reason}\n`;
-
-            if (otherDetails) {
-                message += `\n*Other Details:*\n${otherDetails}\n`;
-            }
+            message += `*Reason for Consultation:*\n${reason}\n\n`;
+            message += `*Additional Details:*\n${otherDetails}`;
 
             const phoneNumber = '916364514741';
             const encodedMessage = encodeURIComponent(message);
             const whatsappUrl = `https://api.whatsapp.com/send/?phone=${phoneNumber}&text=${encodedMessage}`;
 
             window.open(whatsappUrl, '_blank');
-            document.getElementById('appointment-modal').style.display = 'none'; // Close modal after submission
+            document.getElementById('appointment-modal').style.display = 'none';
         });
     }
 
-    /* --- ASSESSMENT QUIZ LOGIC --- */
-    // (This extensive logic remains unchanged)
+    /* --- ASSESSMENT QUIZ LOGIC (Unchanged) --- */
     const questions = [
         { text: "My body is naturally thin and lightweight.", type: 'Prakriti', category: 'vata' }, { text: "My skin is usually dry, rough, and cool.", type: 'Prakriti', category: 'vata' }, { text: "I tend to have variable digestion and irregular appetite.", type: 'Prakriti', category: 'vata' }, { text: "My energy comes in bursts and I tire easily.", type: 'Prakriti', category: 'vata' }, { text: "I tend to worry, feel anxious or nervous often.", type: 'Prakriti', category: 'vata' }, { text: "My body is medium in build and feels warm.", type: 'Prakriti', category: 'pitta' }, { text: "I have a strong appetite and feel uncomfortable when meals are missed.", type: 'Prakriti', category: 'pitta' }, { text: "I tend to get hot easily and prefer cool environments.", type: 'Prakriti', category: 'pitta' }, { text: "I get irritated or angry quickly but calm down fast.", type: 'Prakriti', category: 'pitta' }, { text: "I have sharp intellect and strong concentration.", type: 'Prakriti', category: 'pitta' }, { text: "My body is broad, heavy, and gains weight easily.", type: 'Prakriti', category: 'kapha' }, { text: "My skin is smooth, cool, moist, and pale.", type: 'Prakriti', category: 'kapha' }, { text: "I am calm, stable, and emotionally balanced.", type: 'Prakriti', category: 'kapha' }, { text: "I sleep deeply and find it hard to wake up early.", type: 'Prakriti', category: 'kapha' }, { text: "I take time to learn but have excellent long-term memory.", type: 'Prakriti', category: 'kapha' },
         { text: "My skin appears naturally soft, glowing, and well-moisturized.", type: 'Saara', category: 'rasa' }, { text: "I feel mentally content and emotionally joyful.", type: 'Saara', category: 'rasa' }, { text: "I rarely feel emotionally unstable or irritable.", type: 'Saara', category: 'rasa' }, { text: "My lips, tongue, and palms have a healthy reddish tint.", type: 'Saara', category: 'rakta' }, { text: "I have high energy, endurance, and courage.", type: 'Saara', category: 'rakta' }, { text: "I recover quickly from cuts, wounds, or blood loss.", type: 'Saara', category: 'rakta' }, { text: "My muscles are firm, strong, and well-developed.", type: 'Saara', category: 'mamsa' }, { text: "I have good physical strength and rarely feel weak.", type: 'Saara', category: 'mamsa' }, { text: "I can perform physical labor or exercise with endurance.", type: 'Saara', category: 'mamsa' }, { text: "My body is soft, plump, and well-cushioned.", type: 'Saara', category: 'meda' }, { text: "I have a pleasing and melodious voice.", type: 'Saara', category: 'meda' }, { text: "My skin is smooth and unctuous (oily).", type: 'Saara', category: 'meda' }, { text: "My teeth are strong, white, and even.", type: 'Saara', category: 'asthi' }, { text: "My bones are strong, and I have good posture.", type: 'Saara', category: 'asthi' }, { text: "My nails grow well and are hard and glossy.", type: 'Saara', category: 'asthi' }, { text: "My eyes are large, clear, and attractive.", type: 'Saara', category: 'majja' }, { text: "I have good intellectual capacity and sharp memory.", type: 'Saara', category: 'majja' }, { text: "My joints are well-lubricated and rarely feel stiff or painful.", type: 'Saara', category: 'majja' }, { text: "My face has a natural glow and vitality.", type: 'Saara', category: 'shukra' }, { text: "I have good sexual health, stamina, and fertility.", type: 'Saara', category: 'shukra' }, { text: "I rarely fall sick and recover quickly from illness.", type: 'Saara', category: 'shukra' }, { text: "I am naturally truthful, kind, and peaceful.", type: 'Saara', category: 'sattva' }, { text: "I am emotionally balanced even during difficulties.", type: 'Saara', category: 'sattva' }, { text: "I show compassion toward others and enjoy helping.", type: 'Saara', category: 'sattva' },
@@ -1348,7 +1386,6 @@
     let prakritiChartInstance, saaraChartInstance;
     let fullResultsText = ''; 
     const assessmentModal = document.getElementById('assessment-modal');
-    const startAssessmentBtn = document.getElementById('start-assessment-btn');
     const welcomeScreen = document.getElementById('welcome-screen');
     const quizScreen = document.getElementById('quiz-screen');
     const resultsContainer = document.getElementById('results-container');
@@ -1364,7 +1401,6 @@
     const prakritiPercentagesEl = document.getElementById('prakriti-percentages');
     const saaraPercentagesEl = document.getElementById('saara-percentages');
     const startQuizBtn = document.getElementById('start-quiz-btn');
-    if(startAssessmentBtn) startAssessmentBtn.setAttribute('data-modal-target', 'assessment-modal');
 
     function initializeScores() {
         scores = { prakriti: { vata: 0, pitta: 0, kapha: 0 }, saara: { rasa: 0, rakta: 0, mamsa: 0, meda: 0, asthi: 0, majja: 0, shukra: 0, sattva: 0 }};
