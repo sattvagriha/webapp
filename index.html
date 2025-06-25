@@ -1,0 +1,1340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>SattvaGriha – Ayurvedic Wellness</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <style>
+    /* --- Keyframe Animations --- */
+    @keyframes gradientBG {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+    @keyframes pulse-glow {
+        0% { box-shadow: 0 0 5px rgba(197, 166, 105, 0.2), 0 0 10px rgba(197, 166, 105, 0.3); }
+        50% { box-shadow: 0 0 20px rgba(197, 166, 105, 0.5), 0 0 30px rgba(197, 166, 105, 0.4); }
+        100% { box-shadow: 0 0 5px rgba(197, 166, 105, 0.2), 0 0 10px rgba(197, 166, 105, 0.3); }
+    }
+    @keyframes float {
+        0% { transform: translateY(0px); }
+        50% { transform: translateY(-10px); }
+        100% { transform: translateY(0px); }
+    }
+    @keyframes slideDownFadeIn {
+      from {opacity: 0; transform: translateY(-30px);}
+      to {opacity: 1; transform: translateY(0);}
+    }
+    @keyframes slideInFromLeft {
+      from { opacity: 0; transform: translateX(-50px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+    @keyframes slideInFromRight {
+      from { opacity: 0; transform: translateX(50px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+    @keyframes question-intro {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+
+    /* CSS Variables for Easy Customization */
+    :root {
+      --primary-color: #00695c;
+      --secondary-color: #004d40;
+      --accent-color: #c5a669; /* Soft Gold */
+      --text-color: #4a4a4a;
+      --bg-color: #fcfaf6;
+      --card-bg-color: #ffffff;
+      --print-btn-color: #6a1b9a;
+    }
+
+    /* General Body Styling */
+    body {
+      font-family: 'Lato', Arial, sans-serif;
+      margin: 0;
+      background: var(--bg-color);
+      color: var(--text-color);
+      line-height: 1.7;
+    }
+
+    /* --- Hamburger Menu & Side Navigation --- */
+    .hamburger-menu {
+      position: fixed;
+      top: 15px;
+      left: 20px;
+      z-index: 1001;
+      cursor: pointer;
+      background: rgba(4, 95, 83, 0.5);
+      padding: 10px;
+      border-radius: 8px;
+      transition: background-color 0.3s, transform 0.3s ease-out;
+    }
+    .hamburger-menu:hover {
+        background: rgba(4, 95, 83, 0.8);
+        transform: scale(1.1);
+    }
+    .hamburger-menu span {
+      display: block;
+      width: 30px;
+      height: 3px;
+      margin: 5px 0;
+      background-color: white;
+      transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55), opacity 0.4s ease;
+    }
+    .hamburger-menu.active span:nth-of-type(1) {
+        transform: rotate(45deg) translate(7px, 7px);
+    }
+    .hamburger-menu.active span:nth-of-type(2) {
+        opacity: 0;
+    }
+    .hamburger-menu.active span:nth-of-type(3) {
+        transform: rotate(-45deg) translate(7px, -7px);
+    }
+
+    .side-nav {
+      height: 100%;
+      width: 0; /* Initially hidden */
+      position: fixed;
+      z-index: 1002;
+      top: 0;
+      left: 0;
+      background-color: var(--secondary-color);
+      overflow-x: hidden;
+      transition: 0.5s cubic-bezier(0.77, 0, 0.18, 1);
+      padding-top: 60px;
+    }
+    .side-nav a {
+      padding: 12px 15px 12px 30px;
+      text-decoration: none;
+      font-size: 1.15em;
+      color: #f1f1f1;
+      display: block;
+      transition: color 0.3s, transform 0.3s ease-out;
+    }
+    .side-nav a:hover {
+      color: var(--accent-color);
+      transform: translateX(10px);
+    }
+    .side-nav .close-btn {
+      position: absolute;
+      top: 5px;
+      right: 25px;
+      font-size: 36px;
+      margin-left: 50px;
+    }
+
+    /* --- Modal (Popup) --- */
+    .modal {
+      display: none; /* Hidden by default */
+      position: fixed;
+      z-index: 1003;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0,0,0,0.6);
+      transition: opacity 0.4s ease;
+    }
+    .modal-content {
+      background-color: var(--bg-color);
+      margin: 10% auto;
+      padding: 25px 35px 35px 35px;
+      border: none;
+      width: 85%;
+      max-width: 650px;
+      border-radius: 12px;
+      position: relative;
+      animation: slideDownFadeIn 0.5s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.2);
+    }
+    .close-modal {
+      color: #aaa;
+      position: absolute;
+      top: 10px;
+      right: 25px;
+      font-size: 30px;
+      font-weight: bold;
+      z-index: 1004;
+      transition: transform 0.3s, color 0.3s ease-out;
+    }
+    .close-modal:hover,
+    .close-modal:focus {
+      color: black;
+      text-decoration: none;
+      cursor: pointer;
+      transform: rotate(180deg) scale(1.1);
+    }
+    .modal-content h2 {
+        text-align: left;
+        margin-bottom: 15px;
+    }
+    .modal-content p {
+        line-height: 1.8;
+        font-size: 1.0em;
+    }
+    
+    /* Header & Footer */
+    header, footer {
+      color: white;
+      text-align: center;
+      padding: 40px 20px;
+      background: linear-gradient(-45deg, var(--secondary-color), var(--primary-color), #00796b, #4db6ac);
+      background-size: 400% 400%;
+      animation: gradientBG 15s ease infinite;
+    }
+    header h1 {
+      font-family: 'Merriweather', serif;
+      font-size: 2.8em;
+      margin: 0;
+      color: white;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+    }
+    header h3 {
+      font-weight: 400;
+      opacity: 0.9;
+      margin: 10px 0 0;
+      font-size: 1.2em;
+      color: white;
+    }
+
+    /* Main Content & Sections */
+    main {
+      padding: 20px;
+      max-width: 800px;
+      margin: auto;
+    }
+    section {
+      background: var(--card-bg-color);
+      margin-bottom: 30px;
+      padding: 30px 35px;
+      border-radius: 12px;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+      opacity: 0; /* Start hidden for animation */
+      transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+    }
+    section.visible:nth-of-type(odd) {
+      animation: slideInFromLeft 0.9s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
+    }
+    section.visible:nth-of-type(even) {
+      animation: slideInFromRight 0.9s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
+    }
+
+    /* Typography */
+    h2 {
+      font-family: 'Merriweather', serif;
+      color: var(--secondary-color);
+      text-align: center;
+      margin-top: 0;
+      margin-bottom: 25px;
+      font-size: 2.2em;
+    }
+    h3 {
+      font-family: 'Merriweather', serif;
+      color: var(--secondary-color);
+      font-size: 1.5em;
+    }
+    p, li {
+      font-size: 1.05em;
+    }
+    strong {
+      color: var(--secondary-color);
+    }
+    
+    .profile-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+      text-align: center;
+    }
+    .profile-logo {
+      width: 180px;
+      height: auto;
+      border-radius: 50%;
+      border: 5px solid white;
+      animation: pulse-glow 4s infinite ease-in-out;
+    }
+    
+    .treatment-process {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    .process-step {
+      display: flex;
+      align-items: center;
+      gap: 25px;
+      opacity: 0;
+      transform: translateX(-30px);
+      transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+    }
+    .visible .process-step {
+        opacity: 1;
+        transform: translateX(0);
+    }
+    .visible .process-step:nth-child(2) { transition-delay: 0.2s; }
+    .visible .process-step:nth-child(3) { transition-delay: 0.4s; }
+    .visible .process-step:nth-child(4) { transition-delay: 0.6s; }
+
+    .process-icon {
+      flex-shrink: 0;
+      width: 80px;
+      height: 80px;
+      background-color: var(--primary-color);
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.5em;
+      animation: float 5s ease-in-out infinite;
+    }
+    .visible .process-step:nth-child(odd) .process-icon { animation-delay: 0.5s; }
+    
+    .process-text h4 {
+      font-family: 'Merriweather', serif;
+      margin: 0 0 5px 0;
+      font-size: 1.2em;
+      color: var(--secondary-color);
+    }
+    .process-text p {
+      margin: 0;
+    }
+
+    .accordion-button {
+      background-color: #f1f1f1;
+      color: var(--secondary-color);
+      cursor: pointer;
+      padding: 18px;
+      width: 100%;
+      text-align: left;
+      border: none;
+      outline: none;
+      transition: background-color 0.4s ease-out;
+      font-size: 1.1em;
+      font-weight: bold;
+      border-radius: 8px;
+      margin-top: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .accordion-button:hover, .accordion-button.active {
+      background-color: #e6e6e6;
+    }
+    .accordion-button::after {
+      content: '\002B';
+      color: var(--primary-color);
+      font-weight: bold;
+      font-size: 1.5em;
+      transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+    }
+    .accordion-button.active::after {
+      content: "\2212";
+      transform: rotate(180deg);
+    }
+    .accordion-panel {
+      padding: 0 18px;
+      background-color: white;
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.5s cubic-bezier(0.165, 0.84, 0.44, 1);
+      border-bottom: 1px solid #eee;
+    }
+    .accordion-panel ul {
+      list-style-type: '✅ ';
+      padding-left: 20px;
+      margin-top: 15px;
+      margin-bottom: 20px;
+    }
+    .accordion-panel.open li {
+        opacity: 0;
+        animation: question-intro 0.5s ease-out forwards;
+    }
+    .accordion-panel.open li:nth-child(1) { animation-delay: 0.1s; }
+    .accordion-panel.open li:nth-child(2) { animation-delay: 0.2s; }
+    .accordion-panel.open li:nth-child(3) { animation-delay: 0.3s; }
+    .accordion-panel.open li:nth-child(4) { animation-delay: 0.4s; }
+    .accordion-panel.open li:nth-child(5) { animation-delay: 0.5s; }
+    .accordion-panel.open li:nth-child(6) { animation-delay: 0.6s; }
+    .accordion-panel.open li:nth-child(7) { animation-delay: 0.7s; }
+    .accordion-panel.open li:nth-child(8) { animation-delay: 0.8s; }
+    .accordion-panel.open li:nth-child(9) { animation-delay: 0.9s; }
+
+
+    .plans-container {
+      display: flex;
+      gap: 25px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    .plan-card {
+      background: #f9f9f9;
+      border: 2px solid transparent;
+      border-radius: 10px;
+      padding: 25px;
+      text-align: center;
+      flex: 1;
+      min-width: 280px;
+      transition: transform 0.3s ease-out, box-shadow 0.3s ease-out, border-color 0.3s ease-out;
+    }
+    .plan-card:hover {
+      transform: translateY(-12px) scale(1.02);
+      box-shadow: 0 15px 40px rgba(0,0,0,0.12);
+      border-color: var(--accent-color);
+    }
+    .price {
+      font-size: 2.2em;
+      font-weight: 700;
+      color: var(--primary-color);
+      margin: 15px 0;
+    }
+    .price-details {
+      line-height: 1.5;
+      font-size: 1.1em;
+    }
+
+    .button-container {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      flex-wrap: wrap;
+    }
+    .btn {
+      background: var(--accent-color);
+      color: white !important;
+      padding: 15px 30px;
+      text-decoration: none;
+      border-radius: 8px;
+      display: inline-block;
+      margin-top: 15px;
+      font-weight: 700;
+      font-size: 1.1em;
+      transition: transform 0.3s ease-out, background-color 0.3s ease-out, box-shadow 0.3s ease-out, filter 0.3s ease-out;
+      border: none;
+      cursor: pointer;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    }
+    .btn:disabled {
+        background-color: #ccc;
+        cursor: not-allowed;
+        transform: none;
+        box-shadow: none;
+    }
+    .btn.whatsapp {
+      background-color: #25D366;
+    }
+    .btn.whatsapp:hover {
+      background-color: #1DA851;
+      box-shadow: 0 6px 20px rgba(30, 168, 81, 0.4);
+    }
+    .btn:not(:disabled):hover {
+      background-color: #b39150;
+      transform: translateY(-5px);
+      box-shadow: 0 6px 20px rgba(197, 166, 105, 0.5);
+      filter: brightness(1.1);
+    }
+    .btn i {
+      margin-right: 8px;
+    }
+
+    footer {
+        position: relative;
+    }
+    footer p {
+      margin: 5px 0;
+      opacity: 0.8;
+    }
+    footer .disclaimer {
+      font-size: 0.85em;
+      opacity: 0.7;
+      max-width: 600px;
+      margin: 15px auto 0;
+    }
+    #disclaimer-more-btn {
+        color: white;
+        text-decoration: underline;
+        cursor: pointer;
+        font-weight: bold;
+        opacity: 0.85;
+        transition: opacity 0.3s;
+    }
+    #disclaimer-more-btn:hover {
+        opacity: 1;
+    }
+
+    @media (max-width: 768px) {
+      header h1 { font-size: 2.2em; }
+      h2 { font-size: 1.8em; }
+      .process-step { flex-direction: column; text-align: center; }
+      .modal-content { margin: 20% auto; width: 90%; }
+    }
+
+    /* --- CSS FOR ASSESSMENT QUIZ --- */
+    :root {
+        --print-btn-color: #6a1b9a;
+    }
+    .quiz-container {
+        font-family: 'Poppins', sans-serif;
+        background-color: #ffffff;
+        border-radius: 15px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        max-width: 600px;
+        overflow: hidden;
+        border: 1px solid #eee;
+    }
+    .quiz-header {
+        background-color: var(--primary-color);
+        color: #ffffff;
+        padding: 1.5rem 2rem;
+        text-align: center;
+    }
+    .quiz-header h1 {
+        margin: 0;
+        font-size: 1.6rem;
+        font-family: 'Poppins', sans-serif;
+        color: white;
+        text-shadow: none;
+    }
+    .quiz-body {
+        padding: 2rem 2.5rem;
+    }
+    .welcome-text {
+        text-align: center;
+        margin-bottom: 2rem;
+        font-size: 1rem;
+        color: var(--text-color);
+    }
+    .welcome-text p {
+        margin: 1rem 0;
+    }
+    .welcome-text .emphasis {
+        font-weight: 600;
+        color: var(--secondary-color);
+    }
+    .user-info-form {
+        margin-top: 2rem;
+        border-top: 1px solid #eee;
+        padding-top: 1.5rem;
+    }
+    .form-group {
+        margin-bottom: 1rem;
+    }
+    .form-group label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: 600;
+        color: var(--secondary-color);
+    }
+    .form-group input[type="text"],
+    .form-group input[type="number"] {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-family: 'Poppins', sans-serif;
+        box-sizing: border-box;
+    }
+    .form-group .radio-group {
+        display: flex;
+        gap: 20px;
+        align-items: center;
+    }
+    .form-group .radio-group label {
+        font-weight: normal;
+        margin-bottom: 0;
+        color: var(--text-color);
+    }
+    .progress-bar-container {
+        width: 100%;
+        background-color: #e0e0e0;
+        border-radius: 50px;
+        margin-bottom: 20px;
+        height: 10px;
+    }
+    .progress-bar {
+        width: 0%;
+        height: 100%;
+        background-color: var(--accent-color);
+        border-radius: 50px;
+        transition: width 0.4s ease-in-out;
+    }
+    .section-title {
+        font-size: 1rem;
+        font-weight: 600;
+        color: var(--primary-color);
+        margin-bottom: 0.5rem;
+        text-align: center;
+    }
+    .question-title {
+        font-weight: 600;
+        font-size: 1.2rem;
+        margin-bottom: 1.5rem;
+        color: var(--text-color);
+        text-align: center;
+        min-height: 50px;
+    }
+    .question-animated {
+        animation: question-intro 0.5s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
+    }
+    .options-container {
+        display: flex;
+        flex-direction: column;
+        gap: 0.8rem;
+    }
+    .quiz-container .btn {
+        background-color: var(--primary-color);
+        border: 2px solid var(--primary-color);
+        font-family: 'Poppins', sans-serif;
+    }
+    .quiz-container .btn:not(:disabled):hover {
+        background-color: var(--secondary-color);
+    }
+    .option-btn {
+        background-color: #f8f9fa;
+        border: 2px solid #ddd;
+        border-radius: 8px;
+        padding: 1rem;
+        cursor: pointer;
+        width: 100%;
+        text-align: center;
+        font-size: 1rem;
+        font-family: 'Poppins', sans-serif;
+        font-weight: 600;
+        transition: background-color 0.3s, border-color 0.3s, transform 0.2s ease-out;
+    }
+    .option-btn:hover {
+        transform: translateY(-3px);
+        border-color: var(--accent-color);
+        background-color: #fff;
+    }
+    #results-container {
+        padding: 0;
+        text-align: center;
+    }
+    #results-greeting {
+        font-size: 1.4rem;
+        font-weight: 600;
+        color: var(--secondary-color);
+        padding: 0 2rem;
+        text-align: center;
+    }
+    .dominant-result {
+        background-color: #e8f5e9;
+        border-left: 5px solid var(--primary-color);
+        padding: 1rem 1.5rem;
+        margin: 1.5rem 0;
+        text-align: left;
+        border-radius: 4px;
+    }
+    .dominant-result h3 {
+        margin: 0 0 5px 0;
+        color: var(--secondary-color);
+        font-family: 'Poppins', sans-serif;
+    }
+    .dominant-result p {
+        margin: 0;
+        font-size: 1.2rem;
+        font-weight: 600;
+        color: var(--primary-color);
+    }
+    .chart-container {
+        margin-top: 2rem;
+        padding: 0 1rem;
+    }
+    .percentage-summary {
+        text-align: left;
+        padding: 10px;
+        margin-top: 1rem;
+        background-color: #fafafa;
+        border-radius: 5px;
+        border: 1px solid #eee;
+    }
+    .percentage-summary p {
+        margin: 5px 0;
+        font-weight: 600;
+    }
+    .results-buttons {
+        display: flex;
+        gap: 1rem;
+        margin-top: 1.5rem;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    .quiz-container .disclaimer {
+        font-size: 0.8rem; color: #777; margin-top: 2rem;
+    }
+    #restart-btn {
+        background-color: var(--accent-color);
+        border-color: var(--accent-color);
+    }
+    #restart-btn:hover {
+        background-color: #b39150;
+    }
+    #print-btn {
+        background-color: var(--print-btn-color);
+        border-color: var(--print-btn-color);
+    }
+    #print-btn:hover {
+        background-color: #4a148c;
+    }
+    .hidden {
+        display: none;
+    }
+    @media print {
+        body { background-color: #ffffff; padding: 0; margin: 0; }
+        .modal, .modal-content { display: block !important; box-shadow: none; border: none; width: 100%; max-width: 100%; height: auto; overflow: visible; }
+        .quiz-container { box-shadow: none; border: none; max-width: 100%; border-radius: 0; }
+        .quiz-header { background-color: #ffffff !important; color: #000000 !important; border-bottom: 2px solid #000; }
+        .quiz-body, .results-body { padding: 0; }
+        #results-greeting, .dominant-result p, .dominant-result h3, .percentage-summary p { color: #000000 !important; }
+        .dominant-result { border-left: 5px solid #000; background-color: #f0f0f0; page-break-inside: avoid; }
+        .chart-container { page-break-inside: avoid; }
+        .hamburger-menu, .side-nav, footer, .close-modal, .results-buttons, .disclaimer { display: none !important; }
+        main, header, section { display: none; } /* Hide all other content when printing quiz */
+        #assessment-modal { display: block !important; position: static; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="hamburger-menu" id="hamburger-menu">
+  <span></span>
+  <span></span>
+  <span></span>
+</div>
+
+<div id="side-nav" class="side-nav">
+  <a href="javascript:void(0)" class="close-btn" id="close-nav">&times;</a>
+  <a href="#" class="nav-link" data-content="about">About Us</a>
+  <a href="#" class="nav-link" data-content="ayurveda">What is Ayurveda</a>
+  <a href="#" class="nav-link" data-content="prakriti">What is Prakriti, Saara, and Dosha</a>
+  <a href="#" class="nav-link" data-content="mission">My Mission</a>
+</div>
+
+<header>
+  <h1>SattvaGriha</h1>
+  <h3>Personalized Guidance from a Passionate Ayurveda Scholar</h3>
+</header>
+
+<main>
+
+  <section class="animated-section">
+    <div class="profile-container">
+      <img src="https://uploads.onecompiler.io/43nsnubhq/43nsqadnu/1000000504.jpg" alt="SattvaGriha Ayurveda Logo" class="profile-logo">
+      <div>
+        <h2>About Your Guide</h2>
+        <p><strong>Welcome!</strong> I’m Laxminarayan, a BAMS student (graduating 2028) and Ayurveda practitioner-in-training. At SattvaGriha, I blend ancient wisdom with modern living for personalized healing. My mission: to guide you toward lasting vitality through Prakriti and Saara-based care.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="animated-section">
+    <h2>How Our Treatment Works</h2>
+    <div class="treatment-process">
+        <div class="process-step">
+            <div class="process-icon"><i class="fa-solid fa-calendar-check"></i></div>
+            <div class="process-text">
+                <h4>Step 1: Consultation</h4>
+                <p>Book a slot and begin your wellness journey with an initial consultation call.</p>
+            </div>
+        </div>
+        <div class="process-step">
+            <div class="process-icon"><i class="fa-solid fa-file-medical"></i></div>
+            <div class="process-text">
+                <h4>Step 2: Share Details</h4>
+                <p>Provide the complete history and details of your health concerns.</p>
+            </div>
+        </div>
+        <div class="process-step">
+            <div class="process-icon"><i class="fa-solid fa-magnifying-glass-chart"></i></div>
+            <div class="process-text">
+                <h4>Step 3: Assessment</h4>
+                <p>I will perform an in-depth assessment of your Prakriti, Saara, and Dosha imbalances.</p>
+            </div>
+        </div>
+        <div class="process-step">
+            <div class="process-icon"><i class="fa-solid fa-clipboard-list"></i></div>
+            <div class="process-text">
+                <h4>Step 4: Treatment Plan</h4>
+                <p>You will receive a personalized treatment plan including diet, herbs, and lifestyle advice.</p>
+            </div>
+        </div>
+    </div>
+  </section>
+
+  <section class="animated-section">
+    <h2>Conditions We Address</h2>
+    <p style="text-align: center;">Ayurveda focuses on root-cause treatment, balance of doshas (Vata, Pitta, Kapha), and strengthening immunity (Ojas) rather than just symptomatic relief.</p>
+    
+    <button class="accordion-button">🧠 1. Digestive System Disorders (Annavaha Srotas)</button>
+    <div class="accordion-panel">
+      <ul>
+        <li>Agnimandya – Low digestive fire (indigestion)</li>
+        <li>Amlapitta – Acid reflux, hyperacidity</li>
+        <li>Arshas – Piles/hemorrhoids</li>
+        <li>Grahani – IBS, malabsorption syndrome</li>
+        <li>Atisara – Diarrhea</li>
+        <li>Vibandha - Constipation</li>
+        <li>Anaha – Bloating, flatulence</li>
+        <li>Krimi Roga – Intestinal worms</li>
+        <li>Yakrit Roga – Liver disorders (supportive care)</li>
+      </ul>
+    </div>
+
+    <button class="accordion-button">🌬️ 2. Respiratory System (Pranavaha Srotas)</button>
+    <div class="accordion-panel">
+       <ul>
+        <li>Kasa – Acute/chronic cough</li>
+        <li>Pratishyaya – Allergic or chronic rhinitis</li>
+        <li>Peenasa – Sinusitis</li>
+        <li>Tamak Shwasa – Bronchial asthma</li>
+        <li>Tundikeri – Tonsillitis</li>
+        <li>Swara Bheda – Hoarseness of voice</li>
+      </ul>
+    </div>
+
+    <button class="accordion-button">🧴 3. Skin Diseases (Tvak Vikaras)</button>
+    <div class="accordion-panel">
+       <ul>
+        <li>Kushta – Chronic skin diseases (e.g., eczema, psoriasis, vitiligo)</li>
+        <li>Dadru – Fungal infections</li>
+        <li>Vyanga – Hyperpigmentation, melasma</li>
+        <li>Yuvan Pidika - Acne/Pimples</li>
+        <li>Ruksha Tvacha - Dry Skin / Cracked Heels</li>
+      </ul>
+    </div>
+
+    <button class="accordion-button">🦴 4. Joint and Muscle Disorders</button>
+    <div class="accordion-panel">
+       <ul>
+        <li>Amavata – Rheumatoid arthritis</li>
+        <li>Sandhivata – Osteoarthritis</li>
+        <li>Vatarakta – Gout</li>
+        <li>Kati Shoola - Back pain</li>
+        <li>Gridhrasi - Sciatica</li>
+        <li>Apabahuka - Frozen shoulder</li>
+        <li>Spondylosis / cervical pain</li>
+      </ul>
+    </div>
+
+    <button class="accordion-button">😴 5. Stress, Sleep & Mind (Manas Roga)</button>
+    <div class="accordion-panel">
+       <ul>
+        <li>Nidranasha – Insomnia</li>
+        <li>Chinta, Shoka, Bhaya – Anxiety, grief, fear-related issues</li>
+        <li>Memory loss / Poor concentration</li>
+        <li>Excessive stress / Burnout</li>
+      </ul>
+    </div>
+
+    <button class="accordion-button">👩‍⚕️ 6. Women’s Health (Striroga)</button>
+    <div class="accordion-panel">
+       <ul>
+        <li>Artava Vyapad – Irregular or painful periods</li>
+        <li>PCOS/PCOD hormonal imbalance</li>
+        <li>Yoni Vyapad – Vaginal infections, leucorrhea</li>
+        <li>Vandhyatva - Infertility (Supportive therapy)</li>
+        <li>Menopause symptoms</li>
+      </ul>
+    </div>
+
+    <button class="accordion-button">🍟 7. Lifestyle Diseases</button>
+    <div class="accordion-panel">
+       <ul>
+        <li>Sthoulya - Obesity</li>
+        <li>Madhumeha - Type 2 Diabetes</li>
+        <li>High Cholesterol</li>
+        <li>Rakta Gata Vata - Hypertension</li>
+        <li>Fatty Liver / NAFLD</li>
+        <li>Thyroid disorders (Hypo & Hyper)</li>
+      </ul>
+    </div>
+
+     <button class="accordion-button">🌿 8. Other Speciality Areas</button>
+    <div class="accordion-panel">
+       <ul>
+        <li>Ojakshaya - Weak immunity</li>
+        <li>Jwara - Fever (Viral, seasonal)</li>
+        <li>Mutrakrichra - Mild UTI</li>
+        <li>Rasayana - Rejuvenation therapy</li>
+        <li>Vajikarana - Sexual wellness</li>
+        <li>Khalitya/Palitya - Hair fall / premature greying</li>
+        <li>Netra Roga - Eyesight issues</li>
+      </ul>
+    </div>
+    </section>
+
+  <section class="animated-section" style="text-align:center;">
+    <h2>Your First Step: Initial Consultation</h2>
+    <p>Begin your wellness journey with a detailed one-on-one consultation.</p>
+    <div class="price">₹49 / $2</div>
+    <p>This includes personalized recommendations and <strong>7 days</strong> of follow-up support on call or WhatsApp.</p>
+  </section>
+
+  <section class="animated-section">
+    <h2>Ongoing Wellness Journeys</h2>
+    <p style="text-align:center;">For those seeking continuous guidance, I offer the following plans.</p>
+    <div class="plans-container">
+      <div class="plan-card">
+        <h3>🌿 General Consultation</h3>
+        <p>For regular follow-ups and adapting your lifestyle for sustained health.</p>
+        <div class="price-details">
+            <strong>Monthly:</strong> ₹149 / $5 <br>
+            <strong>Yearly:</strong> ₹999 / $49
+        </div>
+      </div>
+      <div class="plan-card">
+        <h3>🧘 Yoga, Nutrition & Supportive Care</h3>
+        <p>An integrated approach combining diet, herbs, and yoga for complete balance.</p>
+        <div class="price-details">
+            <strong>Monthly:</strong> ₹199 / $9 <br>
+            <strong>Yearly:</strong> ₹1499 / $89
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="animated-section" style="text-align:center;">
+    <h2>Know Your Body Constitution</h2>
+    <p>Discover your unique Ayurvedic Prakriti (body type) and Saara (tissue quality) with our guided assessment. Understanding your constitution is the first step towards personalized health and wellness.</p>
+    <div class="button-container">
+        <button id="start-assessment-btn" class="btn">
+          <i class="fa-solid fa-flask-vial"></i> Start Assessment
+        </button>
+    </div>
+  </section>
+  <section class="animated-section" style="text-align:center;">
+    <h2>Ready to Begin?</h2>
+    <p>Contact me to book your initial consultation. All consultations are held online.</p>
+    <div class="button-container">
+        <a href="https://api.whatsapp.com/send/?phone=%2B916364514741&text=Hello!%20I'm%20interested%20in%20a%20consultation%20from%20SattvaGriha." class="btn whatsapp">
+          <i class="fab fa-whatsapp"></i>Book on WhatsApp
+        </a>
+        <a href="tel:+916364514741" class="btn">
+          <i class="fas fa-phone"></i>Call Now
+        </a>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <p>© 2025 SattvaGriha. All rights reserved.</p>
+  <p class="disclaimer">
+    <strong>Disclaimer:</strong> This consultation service is provided by a BAMS (Bachelor of Ayurvedic Medicine and Surgery) student for general wellness, preventive care, and educational purposes<span id="disclaimer-dots">... </span><a id="disclaimer-more-btn">more</a><span id="disclaimer-more-text" style="display: none;">. The guidance is based on Ayurvedic principles and basic knowledge of modern medicine. It is not a substitute for diagnosis or treatment by a licensed doctor, and should not be used in medical emergencies or life-threatening conditions. For urgent medical issues, please contact your nearest hospital or a qualified healthcare provider immediately.</span>
+  </p>
+</footer>
+
+<div id="info-modal" class="modal">
+  <div class="modal-content">
+    <span class="close-modal" id="close-modal">&times;</span>
+    <h2 id="modal-title"></h2>
+    <p id="modal-text"></p>
+  </div>
+</div>
+
+<div id="assessment-modal" class="modal">
+    <div class="modal-content" style="padding:0; max-width: 650px;">
+        <span class="close-modal" id="close-assessment-modal">&times;</span>
+        <div class="quiz-container">
+            <div id="welcome-screen">
+                <div class="quiz-header">
+                    <h1>Ayurvedic Constitution Quiz</h1>
+                </div>
+                <div class="quiz-body">
+                    <div class="welcome-text">
+                        <p>This questionnaire is prepared by <span class="emphasis">Laxminarayan (Ayurveda scholar)</span> based on classical Ayurvedic textbooks. For a complete and actual assessment, please consult an Ayurvedic expert.</p>
+                        <p>This assessment is designed to be nearly equivalent to the standard Saara and Prakriti assessment questionnaires recognized by <span class="emphasis">AYUSH</span>.</p>
+                    </div>
+                    <form id="user-info-form" class="user-info-form">
+                        <div class="form-group">
+                            <label for="name">Name:</label>
+                            <input type="text" id="name" name="name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="age">Age:</label>
+                            <input type="number" id="age" name="age" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Sex:</label>
+                            <div class="radio-group">
+                                <input type="radio" id="male" name="sex" value="male" required>
+                                <label for="male">Male</label>
+                                <input type="radio" id="female" name="sex" value="female">
+                                <label for="female">Female</label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="occupation">Occupation:</label>
+                            <input type="text" id="occupation" name="occupation">
+                        </div>
+                        <div class="form-group">
+                            <label for="city">City Name:</label>
+                            <input type="text" id="city" name="city">
+                        </div>
+                        <button type="submit" id="start-quiz-btn" class="btn">Agree and Continue</button>
+                    </form>
+                </div>
+            </div>
+            <div id="quiz-screen" class="hidden">
+                <div class="quiz-header">
+                    <h1>Assessment in Progress</h1>
+                </div>
+                <div class="quiz-body">
+                    <div class="progress-bar-container">
+                        <div class="progress-bar" id="progress-bar"></div>
+                    </div>
+                    <p id="section-title" class="section-title"></p>
+                    <h2 id="question-title" class="question-title"></h2>
+                    <div id="options-container" class="options-container"></div>
+                </div>
+            </div>
+            <div id="results-container" class="hidden">
+                <div class="quiz-header">
+                     <h1>Assessment Complete</h1>
+                </div>
+                <div class="results-body" style="padding: 1.5rem 2rem 2rem 2rem;">
+                    <h2 id="results-greeting" style="text-align:center;"></h2>
+                    <div class="dominant-result">
+                        <h3>Your Dominant Prakriti (Constitution)</h3>
+                        <p id="dominant-prakriti"></p>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="prakriti-chart"></canvas>
+                        <div id="prakriti-percentages" class="percentage-summary"></div>
+                    </div>
+                    <div class="dominant-result" style="margin-top: 2.5rem;">
+                        <h3>Your Dominant Saara (Tissue Essence)</h3>
+                        <p id="dominant-saara"></p>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="saara-chart"></canvas>
+                        <div id="saara-percentages" class="percentage-summary"></div>
+                    </div>
+                    <p class="disclaimer">
+                        This result is a guide based on your answers. For a complete and accurate diagnosis, including pulse examination, it is recommended to consult a qualified Ayurvedic practitioner.
+                    </p>
+                    <div class="results-buttons">
+                        <button id="restart-btn" class="btn">Take Quiz Again</button>
+                        <button id="print-btn" class="btn">Print Results</button>
+                        <button id="whatsapp-results-btn" class="btn whatsapp" style="flex-basis: 100%; margin-top: 1rem;"><i class="fab fa-whatsapp"></i> Share Results & Book Consultation</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    // Scroll Animation Observer
+    const sections = document.querySelectorAll('.animated-section');
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, {
+      threshold: 0.1
+    });
+    sections.forEach(section => {
+      observer.observe(section);
+    });
+
+    // Accordion Logic
+    const accordionBtns = document.querySelectorAll(".accordion-button");
+    accordionBtns.forEach(button => {
+      button.addEventListener("click", function() {
+        this.classList.toggle("active");
+        const panel = this.nextElementSibling;
+        if (panel.style.maxHeight) {
+          panel.style.maxHeight = null;
+          panel.classList.remove("open");
+        } else {
+          panel.style.maxHeight = panel.scrollHeight + "px";
+          panel.classList.add("open");
+        }
+      });
+    });
+
+    // Disclaimer "more" button logic
+    const moreBtn = document.getElementById("disclaimer-more-btn");
+    if (moreBtn) {
+      moreBtn.addEventListener("click", function() {
+        const dots = document.getElementById("disclaimer-dots");
+        const moreText = document.getElementById("disclaimer-more-text");
+        if (dots) dots.style.display = "none";
+        if (moreText) moreText.style.display = "inline";
+        this.style.display = "none";
+      });
+    }
+
+    /* --- Navigation and Modal Javascript --- */
+    const modalData = {
+      'about': { title: 'About Us', text: `Welcome to SattvaGriha...` },
+      'ayurveda': { title: 'What is Ayurveda?', text: `Ayurveda is a 5,000-year-old system...` },
+      'prakriti': { title: 'What is Prakriti, Saara, and Dosha?', text: `Prakriti is your unique body constitution...` },
+      'mission': { title: 'My Mission', text: `My mission through SattvaGriha is to make the timeless wisdom of Ayurveda accessible...` }
+    };
+
+    const hamburger = document.getElementById('hamburger-menu');
+    const sideNav = document.getElementById('side-nav');
+    const closeNavBtn = document.getElementById('close-nav');
+    const navLinks = document.querySelectorAll('.nav-link');
+    const infoModal = document.getElementById('info-modal');
+    const modalTitle = document.getElementById('modal-title');
+    const modalText = document.getElementById('modal-text');
+    const closeModalBtn = document.getElementById('close-modal');
+
+    function openNav() {
+        sideNav.style.width = "280px";
+        hamburger.classList.add('active');
+    }
+    function closeNav() {
+        sideNav.style.width = "0";
+        hamburger.classList.remove('active');
+    }
+    hamburger.addEventListener('click', () => {
+        if (sideNav.style.width === "280px") {
+            closeNav();
+        } else {
+            openNav();
+        }
+    });
+    closeNavBtn.addEventListener('click', closeNav);
+    
+    function openInfoModal(contentKey) {
+      const content = modalData[contentKey];
+      modalTitle.textContent = content.title;
+      modalText.textContent = content.text;
+      infoModal.style.display = "block";
+    }
+    navLinks.forEach(link => {
+      link.addEventListener('click', function(e) {
+        e.preventDefault();
+        const contentKey = this.getAttribute('data-content');
+        openInfoModal(contentKey);
+        closeNav();
+      });
+    });
+    closeModalBtn.addEventListener('click', () => { infoModal.style.display = "none"; });
+
+    /* --- ASSESSMENT QUIZ LOGIC --- */
+    const questions = [
+        { text: "My body is naturally thin and lightweight.", type: 'Prakriti', category: 'vata' }, { text: "My skin is usually dry, rough, and cool.", type: 'Prakriti', category: 'vata' }, { text: "I tend to have variable digestion and irregular appetite.", type: 'Prakriti', category: 'vata' }, { text: "My energy comes in bursts and I tire easily.", type: 'Prakriti', category: 'vata' }, { text: "I tend to worry, feel anxious or nervous often.", type: 'Prakriti', category: 'vata' }, { text: "My body is medium in build and feels warm.", type: 'Prakriti', category: 'pitta' }, { text: "I have a strong appetite and feel uncomfortable when meals are missed.", type: 'Prakriti', category: 'pitta' }, { text: "I tend to get hot easily and prefer cool environments.", type: 'Prakriti', category: 'pitta' }, { text: "I get irritated or angry quickly but calm down fast.", type: 'Prakriti', category: 'pitta' }, { text: "I have sharp intellect and strong concentration.", type: 'Prakriti', category: 'pitta' }, { text: "My body is broad, heavy, and gains weight easily.", type: 'Prakriti', category: 'kapha' }, { text: "My skin is smooth, cool, moist, and pale.", type: 'Prakriti', category: 'kapha' }, { text: "I am calm, stable, and emotionally balanced.", type: 'Prakriti', category: 'kapha' }, { text: "I sleep deeply and find it hard to wake up early.", type: 'Prakriti', category: 'kapha' }, { text: "I take time to learn but have excellent long-term memory.", type: 'Prakriti', category: 'kapha' },
+        { text: "My skin appears naturally soft, glowing, and well-moisturized.", type: 'Saara', category: 'rasa' }, { text: "I feel mentally content and emotionally joyful.", type: 'Saara', category: 'rasa' }, { text: "I rarely feel emotionally unstable or irritable.", type: 'Saara', category: 'rasa' }, { text: "My lips, tongue, and palms have a healthy reddish tint.", type: 'Saara', category: 'rakta' }, { text: "I have high energy, endurance, and courage.", type: 'Saara', category: 'rakta' }, { text: "I recover quickly from cuts, wounds, or blood loss.", type: 'Saara', category: 'rakta' }, { text: "My muscles are firm, strong, and well-developed.", type: 'Saara', category: 'mamsa' }, { text: "I have good physical strength and rarely feel weak.", type: 'Saara', category: 'mamsa' }, { text: "I can perform physical labor or exercise with endurance.", type: 'Saara', category: 'mamsa' }, { text: "My body is soft, plump, and well-cushioned.", type: 'Saara', category: 'meda' }, { text: "I have a pleasing and melodious voice.", type: 'Saara', category: 'meda' }, { text: "My skin is smooth and unctuous (oily).", type: 'Saara', category: 'meda' }, { text: "My teeth are strong, white, and even.", type: 'Saara', category: 'asthi' }, { text: "My bones are strong, and I have good posture.", type: 'Saara', category: 'asthi' }, { text: "My nails grow well and are hard and glossy.", type: 'Saara', category: 'asthi' }, { text: "My eyes are large, clear, and attractive.", type: 'Saara', category: 'majja' }, { text: "I have good intellectual capacity and sharp memory.", type: 'Saara', category: 'majja' }, { text: "My joints are well-lubricated and rarely feel stiff or painful.", type: 'Saara', category: 'majja' }, { text: "My face has a natural glow and vitality.", type: 'Saara', category: 'shukra' }, { text: "I have good sexual health, stamina, and fertility.", type: 'Saara', category: 'shukra' }, { text: "I rarely fall sick and recover quickly from illness.", type: 'Saara', category: 'shukra' }, { text: "I am naturally truthful, kind, and peaceful.", type: 'Saara', category: 'sattva' }, { text: "I am emotionally balanced even during difficulties.", type: 'Saara', category: 'sattva' }, { text: "I show compassion toward others and enjoy helping.", type: 'Saara', category: 'sattva' },
+    ];
+    let currentQuestionIndex = 0;
+    let scores = {};
+    let maxScores = {};
+    let userName = '';
+    let prakritiChartInstance, saaraChartInstance;
+    let fullResultsText = ''; // NEW: To store the formatted results for WhatsApp
+
+    const assessmentModal = document.getElementById('assessment-modal');
+    const startAssessmentBtn = document.getElementById('start-assessment-btn');
+    const closeAssessmentBtn = document.getElementById('close-assessment-modal');
+    const welcomeScreen = document.getElementById('welcome-screen');
+    const quizScreen = document.getElementById('quiz-screen');
+    const resultsContainer = document.getElementById('results-container');
+    const userInfoForm = document.getElementById('user-info-form');
+    const questionTitleEl = document.getElementById('question-title');
+    const sectionTitleEl = document.getElementById('section-title');
+    const optionsContainerEl = document.getElementById('options-container');
+    const progressBar = document.getElementById('progress-bar');
+    const restartBtn = document.getElementById('restart-btn');
+    const printBtn = document.getElementById('print-btn');
+    const whatsappResultsBtn = document.getElementById('whatsapp-results-btn'); // NEW
+    const resultsGreetingEl = document.getElementById('results-greeting');
+    const prakritiPercentagesEl = document.getElementById('prakriti-percentages');
+    const saaraPercentagesEl = document.getElementById('saara-percentages');
+    const startQuizBtn = document.getElementById('start-quiz-btn');
+
+    function initializeScores() {
+        scores = { prakriti: { vata: 0, pitta: 0, kapha: 0 }, saara: { rasa: 0, rakta: 0, mamsa: 0, meda: 0, asthi: 0, majja: 0, shukra: 0, sattva: 0 }};
+        maxScores = { prakriti: { vata: 0, pitta: 0, kapha: 0 }, saara: { rasa: 0, rakta: 0, mamsa: 0, meda: 0, asthi: 0, majja: 0, shukra: 0, sattva: 0 }};
+        
+        questions.forEach(q => {
+            const typeKey = q.type.toLowerCase();
+            if (maxScores[typeKey] && maxScores[typeKey][q.category] !== undefined) {
+                 maxScores[typeKey][q.category]++;
+            }
+        });
+    }
+
+    function showWelcomeScreen() {
+        welcomeScreen.classList.remove('hidden');
+        quizScreen.classList.add('hidden');
+        resultsContainer.classList.add('hidden');
+        userInfoForm.reset();
+        if (prakritiChartInstance) prakritiChartInstance.destroy();
+        if (saaraChartInstance) saaraChartInstance.destroy();
+        if(startQuizBtn) startQuizBtn.disabled = false;
+    }
+
+    function startQuiz(event) {
+        event.preventDefault(); 
+        if(startQuizBtn) startQuizBtn.disabled = true;
+        userName = document.getElementById('name').value || 'Guest';
+        currentQuestionIndex = 0;
+        initializeScores();
+        welcomeScreen.classList.add('hidden');
+        resultsContainer.classList.add('hidden');
+        quizScreen.classList.remove('hidden');
+        showQuestion();
+    }
+    
+    function showQuestion() {
+        if (currentQuestionIndex >= questions.length) { showResults(); return; }
+        
+        questionTitleEl.classList.remove('question-animated');
+        optionsContainerEl.classList.remove('question-animated');
+        
+        const question = questions[currentQuestionIndex];
+        
+        setTimeout(() => {
+            sectionTitleEl.textContent = `Question ${currentQuestionIndex + 1} / ${questions.length} — ${question.type} Assessment`;
+            questionTitleEl.textContent = question.text;
+            
+            optionsContainerEl.innerHTML = `
+                <button class="option-btn" onclick="recordAnswer(1.0)">Very Much / Always</button>
+                <button class="option-btn" onclick="recordAnswer(0.66)">Moderately / Often</button>
+                <button class="option-btn" onclick="recordAnswer(0.33)">A Little / Sometimes</button>
+                <button class="option-btn" onclick="recordAnswer(0.0)">Not at All / Rarely</button>
+            `;
+            
+            questionTitleEl.classList.add('question-animated');
+            optionsContainerEl.classList.add('question-animated');
+        }, 50);
+
+        progressBar.style.width = `${((currentQuestionIndex) / questions.length) * 100}%`;
+    }
+
+    window.recordAnswer = function(scoreValue) {
+        const question = questions[currentQuestionIndex];
+        const typeKey = question.type.toLowerCase();
+        scores[typeKey][question.category] += scoreValue;
+        
+        currentQuestionIndex++;
+        showQuestion();
+    }
+    
+    // UPDATED: Now populates the fullResultsText variable for WhatsApp
+    function calculateAndDisplayResults() {
+        // --- Prakriti ---
+        const prakritiScores = scores.prakriti;
+        const prakritiPercentages = {};
+        let prakritiSummaryHtml = '<h3>Percentage Score:</h3>';
+        for (const dosha in prakritiScores) {
+            const percentage = (maxScores.prakriti[dosha] > 0) ? (prakritiScores[dosha] / maxScores.prakriti[dosha]) * 100 : 0;
+            prakritiPercentages[dosha] = percentage;
+            prakritiSummaryHtml += `<p>${dosha.charAt(0).toUpperCase() + dosha.slice(1)}: ${percentage.toFixed(1)}%</p>`;
+        }
+        const dominantPrakriti = findDominant(prakritiPercentages);
+        document.getElementById('dominant-prakriti').textContent = dominantPrakriti;
+        prakritiPercentagesEl.innerHTML = prakritiSummaryHtml;
+        createPieChart('prakriti-chart', prakritiPercentages, 'Prakriti Distribution', ['#4e79a7', '#f28e2b', '#59a14f']);
+
+        // --- Saara ---
+        const saaraScores = scores.saara;
+        const saaraPercentages = {};
+        let saaraSummaryHtml = '<h3>Percentage Score:</h3>';
+        for (const saara in saaraScores) {
+            const percentage = (maxScores.saara[saara] > 0) ? (saaraScores[saara] / maxScores.saara[saara]) * 100 : 0;
+            saaraPercentages[saara] = percentage;
+            if (maxScores.saara[saara] > 0) {
+                saaraSummaryHtml += `<p>${saara.charAt(0).toUpperCase() + saara.slice(1)}: ${percentage.toFixed(1)}%</p>`;
+            }
+        }
+        const dominantSaara = findDominant(saaraPercentages);
+        document.getElementById('dominant-saara').textContent = dominantSaara;
+        saaraPercentagesEl.innerHTML = saaraSummaryHtml;
+        createPieChart('saara-chart', saaraPercentages, 'Saara Distribution', ['#e15759', '#76b7b2', '#edc948', '#ff9da7', '#9c755f', '#bab0ac', '#f17f42', '#b07aa1']);
+
+        // --- NEW: Prepare text for WhatsApp ---
+        fullResultsText = `Hello! I've completed the assessment on SattvaGriha for *${userName}*.\n\nHere are my results:\n\n`;
+        fullResultsText += `*Dominant Prakriti (Constitution):* ${dominantPrakriti}\n`;
+        fullResultsText += `*Dominant Saara (Tissue Essence):* ${dominantSaara}\n\n`;
+        fullResultsText += `--- DETAILED PERCENTAGES ---\n`;
+        fullResultsText += `*Prakriti Scores:*\n`;
+        for (const dosha in prakritiPercentages) {
+            fullResultsText += `  - ${dosha.charAt(0).toUpperCase() + dosha.slice(1)}: ${prakritiPercentages[dosha].toFixed(1)}%\n`;
+        }
+        fullResultsText += `\n*Saara Scores:*\n`;
+        for (const saara in saaraPercentages) {
+             if (maxScores.saara[saara] > 0) {
+                fullResultsText += `  - ${saara.charAt(0).toUpperCase() + saara.slice(1)}: ${saaraPercentages[saara].toFixed(1)}%\n`;
+             }
+        }
+        fullResultsText += `\nI would like to book a consultation to discuss these results further. Thank you!`;
+    }
+
+    function findDominant(percentageObject) {
+        let maxPercent = -1;
+        let dominantItems = [];
+        for (const item in percentageObject) {
+            const percent = percentageObject[item];
+            if (percent > maxPercent) {
+                maxPercent = percent;
+                dominantItems = [item];
+            } else if (percent > 0.1 && Math.abs(percent - maxPercent) < 1.0) {
+                dominantItems.push(item);
+            }
+        }
+        if (dominantItems.length === 0 || maxPercent <= 0) return "Balanced / Not enough data";
+        return dominantItems.map(item => item.charAt(0).toUpperCase() + item.slice(1)).join(' / ');
+    }
+
+    function createPieChart(canvasId, percentageObject, title, colorPalette) {
+        const ctx = document.getElementById(canvasId).getContext('2d');
+        const chartData = { labels: Object.keys(percentageObject).map(k => `${k.charAt(0).toUpperCase() + k.slice(1)}`), datasets: [{ data: Object.values(percentageObject), backgroundColor: colorPalette, borderColor: '#ffffff', borderWidth: 2 }] };
+        const chartInstance = new Chart(ctx, { type: 'pie', data: chartData, options: { responsive: true, animation: { animateScale: true, animateRotate: true }, plugins: { legend: { position: 'top' }, title: { display: true, text: title, font: { size: 16, weight: 'bold' } }, tooltip: { callbacks: { label: function(context) { return `${context.label}: ${context.parsed.toFixed(1)}%`; } } } } } });
+        if (canvasId === 'prakriti-chart') prakritiChartInstance = chartInstance; else if (canvasId === 'saara-chart') saaraChartInstance = chartInstance;
+    }
+
+    function showResults() {
+        quizScreen.classList.add('hidden');
+        resultsContainer.classList.remove('hidden');
+        resultsGreetingEl.textContent = `Dear ${userName}, your assessment results are:`;
+        calculateAndDisplayResults();
+    }
+
+    userInfoForm.addEventListener('submit', startQuiz);
+    restartBtn.addEventListener('click', showWelcomeScreen);
+    printBtn.addEventListener('click', () => { window.print(); });
+    startAssessmentBtn.addEventListener('click', () => { assessmentModal.style.display = 'block'; showWelcomeScreen(); });
+    closeAssessmentBtn.addEventListener('click', () => { assessmentModal.style.display = 'none'; });
+
+    // NEW: Event listener for the WhatsApp share button
+    whatsappResultsBtn.addEventListener('click', () => {
+        const phoneNumber = '916364514741';
+        const encodedMessage = encodeURIComponent(fullResultsText);
+        const whatsappUrl = `https://api.whatsapp.com/send/?phone=${phoneNumber}&text=${encodedMessage}`;
+        window.open(whatsappUrl, '_blank');
+    });
+
+    window.addEventListener('click', function(event) {
+      if (event.target == infoModal) { infoModal.style.display = "none"; }
+      if (event.target == assessmentModal) { assessmentModal.style.display = "none"; }
+    });
+  });
+</script>
+
+</body>
+</html>
