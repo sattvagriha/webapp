@@ -1111,7 +1111,7 @@
   <div class="modal-content">
     <span class="close-modal">&times;</span>
     <h2 style="text-align:center;">Book Your Appointment</h2>
-    <p style="text-align:center; margin-top:-15px; margin-bottom:25px; white-space:normal;">Please fill all the fields below. Your details will be sent to me on WhatsApp for confirmation.</p>
+    <p style="text-align:center; margin-top:-15px; margin-bottom:25px; white-space:normal;">Please fill the required fields. Your details will be sent to me on WhatsApp for confirmation.</p>
     <form id="appointment-form">
       <div class="form-group">
         <label for="appt-name">Full Name:</label>
@@ -1141,11 +1141,7 @@
                 <label for="nat-non-indian">Non-Indian</label>
             </div>
       </div>
-      <div class="form-group" id="fee-container" style="display: none;">
-            <label>Initial Consultation Fee:</label>
-            <p id="fee-text"></p>
-      </div>
-      <div class="form-group">
+       <div class="form-group">
           <label for="appt-package">Select a Plan:</label>
           <select id="appt-package" name="package" required>
               <option value="" disabled selected>-- Please select a plan --</option>
@@ -1157,13 +1153,17 @@
               <option value="Just a General Query">Just a General Query</option>
           </select>
       </div>
+      <div class="form-group" id="fee-container" style="display: none;">
+            <label>Plan Fee:</label>
+            <p id="fee-text"></p>
+      </div>
       <div class="form-group">
         <label for="appt-reason">Reason for Consultation (Your health issue):</label>
         <textarea id="appt-reason" name="reason" rows="4" required></textarea>
       </div>
       <div class="form-group">
-        <label for="appt-other-details">Additional Details (illness duration, past treatments):</label>
-        <textarea id="appt-other-details" name="other_details" rows="2" required placeholder="Please provide relevant history or type N/A if not applicable."></textarea>
+        <label for="appt-other-details">Additional Details (illness duration, past treatments) (Optional):</label>
+        <textarea id="appt-other-details" name="other_details" rows="2"></textarea>
       </div>
       <div class="button-container">
           <button type="submit" class="btn whatsapp"><i class="fab fa-whatsapp"></i> Submit via WhatsApp</button>
@@ -1317,34 +1317,59 @@
     });
 
     /* --- Appointment Form Logic --- */
+    const planPrices = {
+        'Initial Consultation Only': { indian: '₹49', nonIndian: '$2' },
+        'General Consultation (Monthly)': { indian: '₹149', nonIndian: '$5' },
+        'General Consultation (Yearly)': { indian: '₹999', nonIndian: '$49' },
+        'Yoga, Nutrition & Supportive Care (Monthly)': { indian: '₹199', nonIndian: '$9' },
+        'Yoga, Nutrition & Supportive Care (Yearly)': { indian: '₹1499', nonIndian: '$89' },
+        'Just a General Query': { indian: 'No Fee', nonIndian: 'No Fee' }
+    };
+
     const appointmentForm = document.getElementById('appointment-form');
+    const planSelect = document.getElementById('appt-package');
     const nationalityRadios = document.querySelectorAll('input[name="nationality"]');
     const feeContainer = document.getElementById('fee-container');
     const feeText = document.getElementById('fee-text');
     let consultationFee = '';
 
-    nationalityRadios.forEach(radio => {
-        radio.addEventListener('change', event => {
-            if (event.target.value === 'Indian') {
-                consultationFee = '₹49';
-            } else if (event.target.value === 'Non-Indian') {
-                consultationFee = '$2';
+    function updateFee() {
+        const selectedPlan = planSelect.value;
+        const selectedNationalityEl = document.querySelector('input[name="nationality"]:checked');
+
+        if (selectedPlan && selectedNationalityEl) {
+            const nationalityKey = selectedNationalityEl.value === 'Indian' ? 'indian' : 'nonIndian';
+            const priceInfo = planPrices[selectedPlan];
+
+            if (priceInfo) {
+                consultationFee = priceInfo[nationalityKey];
+                feeText.textContent = consultationFee;
+                feeContainer.style.display = 'block';
+            } else {
+                feeContainer.style.display = 'none';
+                consultationFee = '';
             }
-            feeText.textContent = consultationFee;
-            feeContainer.style.display = 'block';
-        });
+        } else {
+            feeContainer.style.display = 'none';
+            consultationFee = '';
+        }
+    }
+
+    planSelect.addEventListener('change', updateFee);
+    nationalityRadios.forEach(radio => {
+        radio.addEventListener('change', updateFee);
     });
 
     if (appointmentForm) {
         appointmentForm.addEventListener('submit', function(event) {
             event.preventDefault();
 
-            // Explicitly check required fields for better user feedback
             const name = document.getElementById('appt-name').value;
             const age = document.getElementById('appt-age').value;
             const genderEl = document.querySelector('input[name="gender"]:checked');
             const nationalityEl = document.querySelector('input[name="nationality"]:checked');
-            const selectedPackage = document.getElementById('appt-package').value;
+            const selectedPackage = planSelect.value;
+            const reason = document.getElementById('appt-reason').value;
             
             if (!genderEl) { alert('Please select your gender.'); return; }
             if (!nationalityEl) { alert('Please select your nationality.'); return; }
@@ -1352,7 +1377,6 @@
 
             const gender = genderEl.value;
             const nationality = nationalityEl.value;
-            const reason = document.getElementById('appt-reason').value;
             const otherDetails = document.getElementById('appt-other-details').value;
 
             let message = `I want to book an appointment\n\nMy details are:\n`;
@@ -1360,10 +1384,14 @@
             message += `*Age:* ${age}\n`;
             message += `*Gender:* ${gender}\n`;
             message += `*Nationality:* ${nationality}\n`;
-            message += `*Consultation Fee:* ${consultationFee}\n`;
+            
+            if (consultationFee && consultationFee !== 'No Fee') {
+                message += `*Plan Fee:* ${consultationFee}\n`;
+            }
+            
             message += `*Selected Plan:* ${selectedPackage}\n\n`;
             message += `*Reason for Consultation:*\n${reason}\n\n`;
-            message += `*Additional Details:*\n${otherDetails}`;
+            message += `*Additional Details:*\n${otherDetails || 'Not Provided'}`;
 
             const phoneNumber = '916364514741';
             const encodedMessage = encodeURIComponent(message);
