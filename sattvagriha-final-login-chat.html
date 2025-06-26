@@ -1,0 +1,163 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>SattvaGriha – Ayurvedic Wellness</title>
+
+  <!-- Auth0 SDK -->
+  <script src="https://cdn.auth0.com/js/auth0-spa-js/1.13/auth0-spa-js.production.js"></script>
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
+
+  <style>
+    body { font-family: 'Segoe UI', sans-serif; margin: 20px; background: #f4f4f4; }
+    header { display: flex; justify-content: space-between; align-items: center; }
+    #login-button, #logout-button { padding: 10px 20px; cursor: pointer; }
+    #user-profile { margin-top: 20px; }
+    #chat-box { display: none; margin-top: 20px; }
+    #messages { background: #fff; padding: 10px; border: 1px solid #ccc; height: 250px; overflow-y: auto; }
+    .message { padding: 5px; margin: 5px 0; border-radius: 6px; background: #e1f5fe; }
+    .message.you { background: #c8e6c9; text-align: right; }
+    #messageInput { width: 70%; padding: 10px; }
+    button.send-btn { padding: 10px; }
+    select#recipientSelect { padding: 5px; }
+  </style>
+</head>
+<body>
+  <header>
+    <h2>SattvaGriha Wellness</h2>
+    <div>
+      <button id="login-button">Login</button>
+      <button id="logout-button" style="display:none;">Logout</button>
+    </div>
+  </header>
+
+  <div id="user-profile" style="display:none;"></div>
+
+  <div id="chat-box">
+    <h3>Chat with:</h3>
+    <select id="recipientSelect"><option value="">Select User</option></select>
+    <div id="messages"></div>
+    <input type="text" id="messageInput" placeholder="Type a message..." />
+    <button class="send-btn" onclick="sendMessage()">Send</button>
+  </div>
+
+  <script>
+    let auth0 = null;
+    let currentUser = null;
+    let db = null;
+    let selectedRecipient = "";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyDx6jq8MrirgOWubA7RnowlT1V9FlGHPXE",
+      authDomain: "sattvagriha-website.firebaseapp.com",
+      projectId: "sattvagriha-website",
+      storageBucket: "sattvagriha-website.firebasestorage.app",
+      messagingSenderId: "609557030681",
+      appId: "1:609557030681:web:4133ff12edca9afbbec788",
+      measurementId: "G-X63K12T00Q"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    db = firebase.firestore();
+
+    async function configureAuth0() {
+      auth0 = await createAuth0Client({
+        domain: "sattvagriha.us.auth0.com",
+        client_id: "hchHVJqx7Mb9ygTDUxLRzTQ0SlMOGfe3"
+      });
+    }
+
+    async function login() {
+      await auth0.loginWithPopup();
+      const user = await auth0.getUser();
+      currentUser = user;
+
+      document.getElementById("login-button").style.display = "none";
+      document.getElementById("logout-button").style.display = "inline-block";
+      document.getElementById("user-profile").style.display = "block";
+      document.getElementById("chat-box").style.display = "block";
+      document.getElementById("user-profile").innerHTML = `
+        <img src="${user.picture}" width="40" style="border-radius:50%;"> 
+        <strong>${user.name}</strong> (${user.email})
+      `;
+
+      await db.collection("users").doc(user.email).set({
+        name: user.name,
+        email: user.email,
+        picture: user.picture
+      }, { merge: true });
+
+      loadUserList();
+    }
+
+    async function logout() {
+      await auth0.logout({ returnTo: window.location.origin });
+      location.reload();
+    }
+
+    function loadUserList() {
+      db.collection("users").get().then(snapshot => {
+        const select = document.getElementById("recipientSelect");
+        select.innerHTML = '<option value="">Select User</option>';
+        snapshot.forEach(doc => {
+          const user = doc.data();
+          if (user.email !== currentUser.email) {
+            const opt = document.createElement("option");
+            opt.value = user.email;
+            opt.textContent = user.name;
+            select.appendChild(opt);
+          }
+        });
+      });
+    }
+
+    document.getElementById("recipientSelect").addEventListener("change", function() {
+      selectedRecipient = this.value;
+      if (selectedRecipient) {
+        listenToMessages();
+      } else {
+        document.getElementById("messages").innerHTML = "";
+      }
+    });
+
+    function listenToMessages() {
+      const chatId = [currentUser.email, selectedRecipient].sort().join("_");
+      db.collection("chats").doc(chatId).collection("messages").orderBy("timestamp")
+        .onSnapshot(snapshot => {
+          const box = document.getElementById("messages");
+          box.innerHTML = "";
+          snapshot.forEach(doc => {
+            const msg = doc.data();
+            const div = document.createElement("div");
+            div.className = "message" + (msg.sender === currentUser.email ? " you" : "");
+            div.textContent = `${msg.sender === currentUser.email ? 'You' : msg.senderName}: ${msg.text}`;
+            box.appendChild(div);
+          });
+        });
+    }
+
+    function sendMessage() {
+      const text = document.getElementById("messageInput").value.trim();
+      if (!text || !selectedRecipient) return;
+
+      const chatId = [currentUser.email, selectedRecipient].sort().join("_");
+      db.collection("chats").doc(chatId).collection("messages").add({
+        sender: currentUser.email,
+        senderName: currentUser.name,
+        text,
+        timestamp: firebase.firestore.FieldValue.serverTimestamp()
+      });
+
+      document.getElementById("messageInput").value = "";
+    }
+
+    document.getElementById("login-button").addEventListener("click", login);
+    document.getElementById("logout-button").addEventListener("click", logout);
+    window.onload = configureAuth0;
+  </script>
+</body>
+</html>
