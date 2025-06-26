@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>SattvaGriha – Ayurvedic Wellness</title>
-  
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
@@ -104,6 +104,8 @@
     .modal {
       display: none; position: fixed; z-index: 1003; left: 0; top: 0;
       width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.6);
+      /* Accessibility: Added for better keyboard navigation, visible focus */
+      outline: 0; 
     }
     .modal-content {
       background-color: var(--bg-color); margin: 8% auto; padding: 25px 35px 35px 35px;
@@ -114,6 +116,11 @@
       color: #aaa; position: absolute; top: 10px; right: 25px;
       font-size: 30px; font-weight: bold; z-index: 1004;
       transition: transform 0.3s, color 0.3s;
+      /* Accessibility */
+      cursor: pointer;
+      border: none;
+      background: transparent;
+      padding: 5px;
     }
     .close-modal:hover, .close-modal:focus {
       color: black; text-decoration: none; cursor: pointer; transform: rotate(180deg) scale(1.1);
@@ -209,7 +216,7 @@
     #appointment-form input[type="number"]:focus,
     #appointment-form select:focus,
     #appointment-form textarea:focus { outline: none; border-color: var(--primary-color); box-shadow: 0 0 5px rgba(0, 105, 92, 0.3); }
-    .form-group .radio-group { display: flex; gap: 20px; align-items: center; }
+    .form-group .radio-group { display: flex; gap: 20px; align-items: center; flex-wrap: wrap; }
     .form-group .radio-group label { font-weight: normal; margin-bottom: 0; color: var(--text-color); }
     .form-group .radio-group input[type="radio"] { margin-right: 5px; }
     #appointment-form select {
@@ -289,7 +296,7 @@
         transform: translateX(5px);
     }
     .blog-list-item i { margin-right: 12px; color: var(--primary-color); width: 20px; text-align: center; }
-    
+
     /* Blog Content View */
     #blog-content-view { padding: 20px 35px 35px; animation: fadeIn 0.6s; }
     .back-to-blogs-btn {
@@ -345,7 +352,7 @@
       #blog-post-title { font-size: 1.8em; }
       .tab-link { padding: 10px 12px; font-size: 0.9em; }
     }
-    
+
     @media print {
         body { background-color: #ffffff; padding: 0; margin: 0; }
         .modal, .modal-content { display: block !important; box-shadow: none; border: none; width: 100%; max-width: 100%; height: auto; overflow: visible; }
@@ -365,17 +372,19 @@
 </head>
 <body>
 
-<div class="hamburger-menu" id="hamburger-menu"><span></span><span></span><span></span></div>
+<div class="hamburger-menu" id="hamburger-menu" role="button" aria-label="Open Navigation Menu" aria-expanded="false" aria-controls="side-nav">
+    <span></span><span></span><span></span>
+</div>
 
-<div id="side-nav" class="side-nav">
-  <a href="javascript:void(0)" class="close-btn" id="close-nav">&times;</a>
+<nav id="side-nav" class="side-nav" aria-label="Main Navigation">
+  <a href="javascript:void(0)" class="close-btn" id="close-nav" role="button" aria-label="Close Navigation">&times;</a>
   <a href="#" class="nav-link" data-content="about">About Us</a>
   <a href="#" class="nav-link" data-modal-target="appointment-modal">Book Appointment</a>
   <a href="#" class="nav-link" data-content="ayurveda">What is Ayurveda</a>
   <a href="#" class="nav-link" data-content="prakriti">What is Prakriti & Dosha</a>
   <a href="#" class="nav-link" data-content="mission">My Mission</a>
   <a href="#" class="nav-link" data-modal-target="blog-modal">Blog</a>
-</div>
+</nav>
 
 <header>
   <h1>SattvaGriha</h1>
@@ -383,60 +392,144 @@
 </header>
 
 <main>
-    <section class="animated-section">
+    <section class="animated-section" aria-labelledby="about-us-heading">
         <div class="profile-container">
-        <img src="https://uploads.onecompiler.io/43nsnubhq/43nsqadnu/1000000504.jpg" alt="SattvaGriha Ayurveda Logo" class="profile-logo">
-        <div>
-            <h2>About Your Guide</h2>
-            <p><strong>Welcome!</strong> I’m Laxminarayan, a BAMS student (graduating 2028) and Ayurveda practitioner-in-training. At SattvaGriha, I blend ancient wisdom with modern living for personalized healing. My mission: to guide you toward lasting vitality through Prakriti and Saara-based care.</p>
-        </div>
+            <figure>
+                <img src="https://uploads.onecompiler.io/43nsnubhq/43nsqadnu/1000000504.jpg" alt="SattvaGriha Ayurveda Logo" class="profile-logo" loading="lazy">
+                <figcaption class="sr-only">SattvaGriha Ayurveda Logo</figcaption>
+            </figure>
+            <div>
+                <h2 id="about-us-heading">About Your Guide</h2>
+                <p><strong>Welcome!</strong> I’m Laxminarayan, a BAMS student (graduating 2028) and Ayurveda practitioner-in-training. At SattvaGriha, I blend ancient wisdom with modern living for personalized healing. My mission: to guide you toward lasting vitality through Prakriti and Saara-based care.</p>
+            </div>
         </div>
     </section>
 
-    <section class="animated-section">
-        <h2>How Our Treatment Works</h2>
+    <section class="animated-section" aria-labelledby="treatment-works-heading">
+        <h2 id="treatment-works-heading">How Our Treatment Works</h2>
         <div class="treatment-process">
             <div class="process-step">
-                <div class="process-icon"><i class="fa-solid fa-calendar-check"></i></div>
+                <div class="process-icon" aria-hidden="true"><i class="fa-solid fa-calendar-check"></i></div>
                 <div class="process-text"><h4>Step 1: Consultation</h4><p>Book a slot and begin your wellness journey with an initial consultation call.</p></div>
             </div>
             <div class="process-step">
-                <div class="process-icon"><i class="fa-solid fa-file-medical"></i></div>
+                <div class="process-icon" aria-hidden="true"><i class="fa-solid fa-file-medical"></i></div>
                 <div class="process-text"><h4>Step 2: Share Details</h4><p>Provide the complete history and details of your health concerns.</p></div>
             </div>
             <div class="process-step">
-                <div class="process-icon"><i class="fa-solid fa-magnifying-glass-chart"></i></div>
+                <div class="process-icon" aria-hidden="true"><i class="fa-solid fa-magnifying-glass-chart"></i></div>
                 <div class="process-text"><h4>Step 3: Assessment</h4><p>I will perform an in-depth assessment of your Prakriti, Saara, and Dosha imbalances.</p></div>
             </div>
             <div class="process-step">
-                <div class="process-icon"><i class="fa-solid fa-clipboard-list"></i></div>
+                <div class="process-icon" aria-hidden="true"><i class="fa-solid fa-clipboard-list"></i></div>
                 <div class="process-text"><h4>Step 4: Treatment Plan</h4><p>You will receive a personalized treatment plan including diet, herbs, and lifestyle advice.</p></div>
             </div>
         </div>
     </section>
 
-    <section class="animated-section">
-        <h2>Conditions We Address</h2>
+    <section class="animated-section" aria-labelledby="conditions-heading">
+        <h2 id="conditions-heading">Conditions We Address</h2>
         <p style="text-align: center;">Ayurveda focuses on root-cause treatment, balance of doshas (Vata, Pitta, Kapha), and strengthening immunity (Ojas) rather than just symptomatic relief.</p>
-        <button class="accordion-button">🤮 Digestive System Disorders (Annavaha Srotas)</button><div class="accordion-panel"><ul><li>Agnimandya – Low digestive fire (indigestion)</li><li>Amlapitta – Acid reflux, hyperacidity</li><li>Arshas – Piles/hemorrhoids</li><li>Grahani – IBS, malabsorption syndrome</li><li>Atisara – Diarrhea</li><li>Vibandha - Constipation</li><li>Anaha – Bloating, flatulence</li><li>Krimi Roga – Intestinal worms</li><li>Yakrit Roga – Liver disorders (supportive care)</li></ul></div>
-        <button class="accordion-button">️🫁 Respiratory System (Pranavaha Srotas)</button><div class="accordion-panel"><ul><li>Kasa – Acute/chronic cough</li><li>Pratishyaya – Allergic or chronic rhinitis</li><li>Peenasa – Sinusitis</li><li>Tamak Shwasa – Bronchial asthma</li><li>Tundikeri – Tonsillitis</li><li>Swara Bheda – Hoarseness of voice</li></ul></div>
-        <button class="accordion-button">🧴 Skin Diseases (Tvak Vikaras)</button><div class="accordion-panel"><ul><li>Kushta – Chronic skin diseases (e.g., eczema, psoriasis, vitiligo)</li><li>Dadru – Fungal infections</li><li>Vyanga – Hyperpigmentation, melasma</li><li>Yuvan Pidika - Acne/Pimples</li><li>Ruksha Tvacha - Dry Skin / Cracked Heels</li></ul></div>
-        <button class="accordion-button">🦴 Joint and Muscle Disorders</button><div class="accordion-panel"><ul><li>Amavata – Rheumatoid arthritis</li><li>Sandhivata – Osteoarthritis</li><li>Vatarakta – Gout</li><li>Kati Shoola - Back pain</li><li>Gridhrasi - Sciatica</li><li>Apabahuka - Frozen shoulder</li><li>Spondylosis / cervical pain</li></ul></div>
-        <button class="accordion-button">😴 Stress, Sleep & Mind (Manas Roga)</button><div class="accordion-panel"><ul><li>Nidranasha – Insomnia</li><li>Chinta, Shoka, Bhaya – Anxiety, grief, fear-related issues</li><li>Memory loss / Poor concentration</li><li>Excessive stress / Burnout</li></ul></div>
-        <button class="accordion-button">️🧏‍♀️ Women’s Health (Striroga)</button><div class="accordion-panel"><ul><li>Artava Vyapad – Irregular or painful periods</li><li>PCOS/PCOD hormonal imbalance</li><li>Yoni Vyapad – Vaginal infections, leucorrhea</li><li>Vandhyatva - Infertility (Supportive therapy)</li><li>Menopause symptoms</li></ul></div>
-        <button class="accordion-button">🍟 Lifestyle Diseases</button><div class="accordion-panel"><ul><li>Sthoulya - Obesity</li><li>Madhumeha - Type 2 Diabetes</li><li>High Cholesterol</li><li>Rakta Gata Vata - Hypertension</li><li>Fatty Liver / NAFLD</li><li>Thyroid disorders (Hypo & Hyper)</li></ul></div>
-        <button class="accordion-button">🌿 Other Speciality Areas</button><div class="accordion-panel"><ul><li>Ojakshaya - Weak immunity</li><li>Jwara - Fever (Viral, seasonal)</li><li>Mutrakrichra - Mild UTI</li><li>Rasayana - Rejuvenation therapy</li><li>Vajikarana - Sexual wellness</li><li>Khalitya/Palitya - Hair fall / premature greying</li><li>Netra Roga - Eyesight issues</li></ul></div>
+        <button class="accordion-button" aria-expanded="false" aria-controls="panel-digestive">🤮 Digestive System Disorders (Annavaha Srotas)</button>
+        <div class="accordion-panel" id="panel-digestive" role="region" aria-labelledby="accordion-button-digestive">
+            <ul>
+                <li>Agnimandya – Low digestive fire (indigestion)</li>
+                <li>Amlapitta – Acid reflux, hyperacidity</li>
+                <li>Arshas – Piles/hemorrhoids</li>
+                <li>Grahani – IBS, malabsorption syndrome</li>
+                <li>Atisara – Diarrhea</li>
+                <li>Vibandha - Constipation</li>
+                <li>Anaha – Bloating, flatulence</li>
+                <li>Krimi Roga – Intestinal worms</li>
+                <li>Yakrit Roga – Liver disorders (supportive care)</li>
+            </ul>
+        </div>
+        <button class="accordion-button" aria-expanded="false" aria-controls="panel-respiratory">️🫁 Respiratory System (Pranavaha Srotas)</button>
+        <div class="accordion-panel" id="panel-respiratory" role="region" aria-labelledby="accordion-button-respiratory">
+            <ul>
+                <li>Kasa – Acute/chronic cough</li>
+                <li>Pratishyaya – Allergic or chronic rhinitis</li>
+                <li>Peenasa – Sinusitis</li>
+                <li>Tamak Shwasa – Bronchial asthma</li>
+                <li>Tundikeri – Tonsillitis</li>
+                <li>Swara Bheda – Hoarseness of voice</li>
+            </ul>
+        </div>
+        <button class="accordion-button" aria-expanded="false" aria-controls="panel-skin">🧴 Skin Diseases (Tvak Vikaras)</button>
+        <div class="accordion-panel" id="panel-skin" role="region" aria-labelledby="accordion-button-skin">
+            <ul>
+                <li>Kushta – Chronic skin diseases (e.g., eczema, psoriasis, vitiligo)</li>
+                <li>Dadru – Fungal infections</li>
+                <li>Vyanga – Hyperpigmentation, melasma</li>
+                <li>Yuvan Pidika - Acne/Pimples</li>
+                <li>Ruksha Tvacha - Dry Skin / Cracked Heels</li>
+            </ul>
+        </div>
+        <button class="accordion-button" aria-expanded="false" aria-controls="panel-joints">🦴 Joint and Muscle Disorders</button>
+        <div class="accordion-panel" id="panel-joints" role="region" aria-labelledby="accordion-button-joints">
+            <ul>
+                <li>Amavata – Rheumatoid arthritis</li>
+                <li>Sandhivata – Osteoarthritis</li>
+                <li>Vatarakta – Gout</li>
+                <li>Kati Shoola - Back pain</li>
+                <li>Gridhrasi - Sciatica</li>
+                <li>Apabahuka - Frozen shoulder</li>
+                <li>Spondylosis / cervical pain</li>
+            </ul>
+        </div>
+        <button class="accordion-button" aria-expanded="false" aria-controls="panel-stress">😴 Stress, Sleep & Mind (Manas Roga)</button>
+        <div class="accordion-panel" id="panel-stress" role="region" aria-labelledby="accordion-button-stress">
+            <ul>
+                <li>Nidranasha – Insomnia</li>
+                <li>Chinta, Shoka, Bhaya – Anxiety, grief, fear-related issues</li>
+                <li>Memory loss / Poor concentration</li>
+                <li>Excessive stress / Burnout</li>
+            </ul>
+        </div>
+        <button class="accordion-button" aria-expanded="false" aria-controls="panel-womens">️🧏‍♀️ Women’s Health (Striroga)</button>
+        <div class="accordion-panel" id="panel-womens" role="region" aria-labelledby="accordion-button-womens">
+            <ul>
+                <li>Artava Vyapad – Irregular or painful periods</li>
+                <li>PCOS/PCOD hormonal imbalance</li>
+                <li>Yoni Vyapad – Vaginal infections, leucorrhea</li>
+                <li>Vandhyatva - Infertility (Supportive therapy)</li>
+                <li>Menopause symptoms</li>
+            </ul>
+        </div>
+        <button class="accordion-button" aria-expanded="false" aria-controls="panel-lifestyle">🍟 Lifestyle Diseases</button>
+        <div class="accordion-panel" id="panel-lifestyle" role="region" aria-labelledby="accordion-button-lifestyle">
+            <ul>
+                <li>Sthoulya - Obesity</li>
+                <li>Madhumeha - Type 2 Diabetes</li>
+                <li>High Cholesterol</li>
+                <li>Rakta Gata Vata - Hypertension</li>
+                <li>Fatty Liver / NAFLD</li>
+                <li>Thyroid disorders (Hypo & Hyper)</li>
+            </ul>
+        </div>
+        <button class="accordion-button" aria-expanded="false" aria-controls="panel-other">🌿 Other Speciality Areas</button>
+        <div class="accordion-panel" id="panel-other" role="region" aria-labelledby="accordion-button-other">
+            <ul>
+                <li>Ojakshaya - Weak immunity</li>
+                <li>Jwara - Fever (Viral, seasonal)</li>
+                <li>Mutrakrichra - Mild UTI</li>
+                <li>Rasayana - Rejuvenation therapy</li>
+                <li>Vajikarana - Sexual wellness</li>
+                <li>Khalitya/Palitya - Hair fall / premature greying</li>
+                <li>Netra Roga - Eyesight issues</li>
+            </ul>
+        </div>
     </section>
 
-    <section class="animated-section" style="text-align:center;">
-        <h2>Your First Step: Initial Consultation</h2>
+    <section class="animated-section" aria-labelledby="first-step-heading" style="text-align:center;">
+        <h2 id="first-step-heading">Your First Step: Initial Consultation</h2>
         <p>Begin your wellness journey with a detailed one-on-one consultation.</p>
         <div class="price">₹49 / $2</div>
         <p>This includes personalized recommendations and <strong>7 days</strong> of follow-up support on call or WhatsApp.</p>
     </section>
 
-    <section class="animated-section">
-        <h2>Ongoing Wellness Journeys</h2>
+    <section class="animated-section" aria-labelledby="wellness-journeys-heading">
+        <h2 id="wellness-journeys-heading">Ongoing Wellness Journeys</h2>
         <p style="text-align:center;">For those seeking continuous guidance, I offer the following plans.</p>
         <div class="plans-container">
             <div class="plan-card">
@@ -458,20 +551,20 @@
         </div>
     </section>
 
-    <section class="animated-section" style="text-align:center;">
-        <h2>Know Your Body Constitution</h2>
+    <section class="animated-section" aria-labelledby="body-constitution-heading" style="text-align:center;">
+        <h2 id="body-constitution-heading">Know Your Body Constitution</h2>
         <p>Discover your unique Ayurvedic Prakriti (body type) and Saara (tissue quality) with our guided assessment. Understanding your constitution is the first step towards personalized health and wellness.</p>
         <div class="button-container">
-            <button class="btn" data-modal-target="assessment-modal">
+            <button class="btn" data-modal-target="assessment-modal" aria-controls="assessment-modal">
             <i class="fa-solid fa-flask-vial"></i> Start Assessment
             </button>
         </div>
     </section>
-    <section class="animated-section" style="text-align:center;">
-        <h2>Ready to Begin?</h2>
+    <section class="animated-section" aria-labelledby="begin-journey-heading" style="text-align:center;">
+        <h2 id="begin-journey-heading">Ready to Begin?</h2>
         <p>Contact me to book your initial consultation. All consultations are held online.</p>
         <div class="button-container">
-            <button class="btn" data-modal-target="appointment-modal">
+            <button class="btn" data-modal-target="appointment-modal" aria-controls="appointment-modal">
                 <i class="fa-solid fa-calendar-check"></i> Book an Appointment
             </button>
             <a href="tel:+916364514741" class="btn">
@@ -484,25 +577,25 @@
 <footer>
   <p>© 2025 SattvaGriha. All rights reserved.</p>
   <p class="disclaimer">
-    <strong>Disclaimer:</strong> This consultation service is provided by a BAMS (Bachelor of Ayurvedic Medicine and Surgery) student for general wellness, preventive care, and educational purposes<span id="disclaimer-dots">... </span><a id="disclaimer-more-btn">more</a><span id="disclaimer-more-text" style="display: none;">. The guidance is based on Ayurvedic principles and basic knowledge of modern medicine. It is not a substitute for diagnosis or treatment by a licensed doctor, and should not be used in medical emergencies or life-threatening conditions. For urgent medical issues, please contact your nearest hospital or a qualified healthcare provider immediately.</span>
+    <strong>Disclaimer:</strong> This consultation service is provided by a BAMS (Bachelor of Ayurvedic Medicine and Surgery) student for general wellness, preventive care, and educational purposes<span id="disclaimer-dots">... </span><a id="disclaimer-more-btn" role="button" aria-expanded="false" aria-controls="disclaimer-more-text">more</a><span id="disclaimer-more-text" style="display: none;">. The guidance is based on Ayurvedic principles and basic knowledge of modern medicine. It is not a substitute for diagnosis or treatment by a licensed doctor, and should not be used in medical emergencies or life-threatening conditions. For urgent medical issues, please contact your nearest hospital or a qualified healthcare provider immediately.</span>
   </p>
 </footer>
 
-<div id="info-modal" class="modal">
+<div id="info-modal" class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
   <div class="modal-content">
-    <span class="close-modal">&times;</span>
+    <button class="close-modal" aria-label="Close information modal">&times;</button>
     <h2 id="modal-title"></h2>
     <p id="modal-text"></p>
   </div>
 </div>
 
-<div id="assessment-modal" class="modal">
+<div id="assessment-modal" class="modal" role="dialog" aria-modal="true" aria-labelledby="assessment-modal-title">
     <div class="modal-content" style="padding:0; max-width: 650px;">
-        <span class="close-modal">&times;</span>
+        <button class="close-modal" aria-label="Close assessment quiz modal">&times;</button>
         <div class="quiz-container">
             <div id="welcome-screen">
                 <div class="quiz-header">
-                    <h1>Ayurvedic Constitution Quiz</h1>
+                    <h1 id="assessment-modal-title">Ayurvedic Constitution Quiz</h1>
                 </div>
                 <div class="quiz-body">
                     <div class="welcome-text">
@@ -512,16 +605,17 @@
                     <form id="user-info-form" class="user-info-form">
                         <div class="form-group">
                             <label for="name">Name:</label>
-                            <input type="text" id="name" name="name" required>
+                            <input type="text" id="name" name="name" required aria-required="true">
                         </div>
                         <div class="form-group">
                             <label for="age">Age:</label>
-                            <input type="number" id="age" name="age" required>
+                            <input type="number" id="age" name="age" required aria-required="true">
                         </div>
                         <div class="form-group">
                             <label>Sex:</label>
-                            <div class="radio-group">
-                                <input type="radio" id="male" name="sex" value="male" required>
+                            <div class="radio-group" role="radiogroup" aria-labelledby="sex-label">
+                                <span id="sex-label" class="sr-only">Select your sex</span>
+                                <input type="radio" id="male" name="sex" value="male" required aria-required="true">
                                 <label for="male">Male</label>
                                 <input type="radio" id="female" name="sex" value="female">
                                 <label for="female">Female</label>
@@ -544,7 +638,7 @@
                     <h1>Assessment in Progress</h1>
                 </div>
                 <div class="quiz-body">
-                    <div class="progress-bar-container">
+                    <div class="progress-bar-container" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" aria-label="Quiz Progress">
                         <div class="progress-bar" id="progress-bar"></div>
                     </div>
                     <p id="section-title" class="section-title"></p>
@@ -562,7 +656,7 @@
                         <h3>Your Dominant Prakriti (Constitution)</h3>
                         <p id="dominant-prakriti"></p>
                     </div>
-                    <div class="chart-container">
+                    <div class="chart-container" role="img" aria-label="Prakriti distribution chart">
                         <canvas id="prakriti-chart"></canvas>
                         <div id="prakriti-percentages" class="percentage-summary"></div>
                     </div>
@@ -570,7 +664,7 @@
                         <h3>Your Dominant Saara (Tissue Essence)</h3>
                         <p id="dominant-saara"></p>
                     </div>
-                    <div class="chart-container">
+                    <div class="chart-container" role="img" aria-label="Saara distribution chart">
                         <canvas id="saara-chart"></canvas>
                         <div id="saara-percentages" class="percentage-summary"></div>
                     </div>
@@ -588,20 +682,21 @@
     </div>
 </div>
 
-<div id="appointment-modal" class="modal">
+<div id="appointment-modal" class="modal" role="dialog" aria-modal="true" aria-labelledby="appointment-modal-title">
   <div class="modal-content">
-    <span class="close-modal">&times;</span>
-    <h2 style="text-align:center;">Book Your Appointment</h2>
+    <button class="close-modal" aria-label="Close appointment form modal">&times;</button>
+    <h2 id="appointment-modal-title" style="text-align:center;">Book Your Appointment</h2>
     <p style="text-align:center; margin-top:-15px; margin-bottom:25px; white-space:normal;">Please fill the required fields. Your details will be sent to me on WhatsApp for confirmation.</p>
     <form id="appointment-form">
       <div class="form-group">
         <label for="appt-name">Full Name:</label>
-        <input type="text" id="appt-name" name="name" required>
+        <input type="text" id="appt-name" name="name" required aria-required="true">
       </div>
       <div class="form-group">
           <label>Gender:</label>
-          <div class="radio-group">
-              <input type="radio" id="appt-male" name="gender" value="Male" required>
+          <div class="radio-group" role="radiogroup" aria-labelledby="appt-gender-label">
+              <span id="appt-gender-label" class="sr-only">Select your gender</span>
+              <input type="radio" id="appt-male" name="gender" value="Male" required aria-required="true">
               <label for="appt-male">Male</label>
               <input type="radio" id="appt-female" name="gender" value="Female">
               <label for="appt-female">Female</label>
@@ -611,12 +706,13 @@
       </div>
       <div class="form-group">
         <label for="appt-age">Age:</label>
-        <input type="number" id="appt-age" name="age" required min="1">
+        <input type="number" id="appt-age" name="age" required min="1" aria-required="true">
       </div>
       <div class="form-group">
             <label>Nationality:</label>
-            <div class="radio-group">
-                <input type="radio" id="nat-indian" name="nationality" value="Indian" required>
+            <div class="radio-group" role="radiogroup" aria-labelledby="appt-nationality-label">
+                <span id="appt-nationality-label" class="sr-only">Select your nationality</span>
+                <input type="radio" id="nat-indian" name="nationality" value="Indian" required aria-required="true">
                 <label for="nat-indian">Indian</label>
                 <input type="radio" id="nat-non-indian" name="nationality" value="Non-Indian">
                 <label for="nat-non-indian">Non-Indian</label>
@@ -624,7 +720,7 @@
       </div>
        <div class="form-group">
           <label for="appt-package">Select a Plan:</label>
-          <select id="appt-package" name="package" required>
+          <select id="appt-package" name="package" required aria-required="true">
               <option value="" disabled selected>-- Please select a plan --</option>
               <option value="Initial Consultation Only">Initial Consultation Only</option>
               <option value="General Consultation (Monthly)">General Consultation (Monthly)</option>
@@ -640,7 +736,7 @@
       </div>
       <div class="form-group">
         <label for="appt-reason">Reason for Consultation (Your health issue):</label>
-        <textarea id="appt-reason" name="reason" rows="4" required></textarea>
+        <textarea id="appt-reason" name="reason" rows="4" required aria-required="true"></textarea>
       </div>
       <div class="form-group">
         <label for="appt-other-details">Additional Details (illness duration, past treatments) (Optional):</label>
@@ -653,15 +749,15 @@
   </div>
 </div>
 
-<div id="blog-modal" class="modal">
+<div id="blog-modal" class="modal" role="dialog" aria-modal="true" aria-labelledby="blog-modal-title">
     <div class="modal-content">
-        <span class="close-modal">&times;</span>
+        <button class="close-modal" aria-label="Close blog modal">&times;</button>
         <div class="modal-header"><h2 id="blog-modal-title">Our Blog</h2></div>
         <div id="blog-index-view"></div>
         <div id="blog-content-view" class="hidden">
-            <button class="back-to-blogs-btn"><i class="fas fa-arrow-left"></i> Back to All Articles</button>
+            <button class="back-to-blogs-btn" aria-label="Back to all blog articles"><i class="fas fa-arrow-left"></i> Back to All Articles</button>
             <h2 id="blog-post-title"></h2>
-            <nav id="blog-tabs-nav" class="blog-tabs-nav"></nav>
+            <nav id="blog-tabs-nav" class="blog-tabs-nav" aria-label="Blog Post Sections"></nav>
             <div id="blog-tab-content-container"></div>
         </div>
     </div>
@@ -705,14 +801,27 @@ document.addEventListener("DOMContentLoaded", function() {
 
         if (!hamburger || !sideNav || !closeNavBtn) return;
 
-        const openNav = () => { sideNav.style.width = "280px"; hamburger.classList.add('active'); };
-        const closeNav = () => { sideNav.style.width = "0"; hamburger.classList.remove('active'); };
+        const openNav = () => {
+            sideNav.style.width = "280px";
+            hamburger.classList.add('active');
+            hamburger.setAttribute('aria-expanded', 'true');
+            sideNav.setAttribute('aria-hidden', 'false'); // For accessibility
+        };
+        const closeNav = () => {
+            sideNav.style.width = "0";
+            hamburger.classList.remove('active');
+            hamburger.setAttribute('aria-expanded', 'false');
+            sideNav.setAttribute('aria-hidden', 'true'); // For accessibility
+        };
 
         hamburger.addEventListener('click', () => (sideNav.style.width === "280px" ? closeNav() : openNav()));
         closeNavBtn.addEventListener('click', closeNav);
         navLinks.forEach(link => link.addEventListener('click', closeNav));
+
+        // Add initial aria-hidden state for screen readers
+        sideNav.setAttribute('aria-hidden', 'true');
     }
-    
+
     // --- MAIN PAGE ACCORDIONS ---
     function initMainAccordions() {
         const accordions = document.querySelectorAll('main .accordion-button');
@@ -720,17 +829,31 @@ document.addEventListener("DOMContentLoaded", function() {
 
         accordions.forEach(button => {
             button.addEventListener('click', function() {
-                const wasActive = this.classList.contains('active');
+                const panel = this.nextElementSibling;
+                const isExpanded = this.classList.contains('active');
+
+                // Close all other accordions and reset their aria-expanded state
                 accordions.forEach(btn => {
-                    btn.classList.remove('active');
-                    btn.nextElementSibling.style.maxHeight = null;
-                    btn.nextElementSibling.classList.remove("open");
+                    const otherPanel = btn.nextElementSibling;
+                    if (btn !== this && btn.classList.contains('active')) {
+                        btn.classList.remove('active');
+                        otherPanel.style.maxHeight = null;
+                        otherPanel.classList.remove("open");
+                        btn.setAttribute('aria-expanded', 'false');
+                    }
                 });
-                if (!wasActive) {
+
+                // Toggle the clicked accordion
+                if (!isExpanded) {
                     this.classList.add('active');
-                    const panel = this.nextElementSibling;
                     panel.style.maxHeight = panel.scrollHeight + "px";
                     panel.classList.add("open"); // For list item animation
+                    this.setAttribute('aria-expanded', 'true');
+                } else {
+                    this.classList.remove('active');
+                    panel.style.maxHeight = null;
+                    panel.classList.remove("open");
+                    this.setAttribute('aria-expanded', 'false');
                 }
             });
         });
@@ -739,58 +862,84 @@ document.addEventListener("DOMContentLoaded", function() {
     // --- GENERAL MODAL LOGIC (Open/Close for any modal) ---
     function initModals() {
         const modalData = {
-          'about': { 
-              title: 'About Us', 
-              text: `Welcome to SattvaGriha! I’m Laxminarayan, a BAMS student (graduating 2028) and a passionate Ayurveda practitioner-in-training. At SattvaGriha, my focus is on blending the timeless, ancient wisdom of Ayurveda with the realities of modern living to offer you a path to personalized healing.\n\nI believe in a holistic approach, delving deep into your unique body constitution (Prakriti) and the quality of your tissues (Saara) to create a tailored wellness plan. My goal is to empower you with the knowledge and tools to achieve lasting health and vitality.\n\nFor any query, reach us at sattvagriha@gmail.com.` 
+          'about': {
+              title: 'About Us',
+              text: `Welcome to SattvaGriha! I’m Laxminarayan, a BAMS student (graduating 2028) and a passionate Ayurveda practitioner-in-training. At SattvaGriha, my focus is on blending the timeless, ancient wisdom of Ayurveda with the realities of modern living to offer you a path to personalized healing.\n\nI believe in a holistic approach, delving deep into your unique body constitution (Prakriti) and the quality of your tissues (Saara) to create a tailored wellness plan. My goal is to empower you with the knowledge and tools to achieve lasting health and vitality.\n\nFor any query, reach us at sattvagriha@gmail.com.`
           },
-          'ayurveda': { 
-              title: 'What is Ayurveda?', 
-              text: `Ayurveda, often called the "science of life," is one of the world's oldest holistic healing systems, originating in India over 5,000 years ago. It's based on the belief that health and wellness depend on a delicate balance between the mind, body, and spirit.\n\nAyurveda is not just about treating disease; it's a comprehensive lifestyle guide that promotes longevity and vitality through diet, herbal remedies, yoga, meditation, and personalized daily routines. Its primary goal is to cleanse the body of impurities (ama) and restore balance to the body's fundamental energies (doshas).` 
+          'ayurveda': {
+              title: 'What is Ayurveda?',
+              text: `Ayurveda, often called the "science of life," is one of the world's oldest holistic healing systems, originating in India over 5,000 years ago. It's based on the belief that health and wellness depend on a delicate balance between the mind, body, and spirit.\n\nAyurveda is not just about treating disease; it's a comprehensive lifestyle guide that promotes longevity and vitality through diet, herbal remedies, yoga, meditation, and personalized daily routines. Its primary goal is to cleanse the body of impurities (ama) and restore balance to the body's fundamental energies (doshas).`
           },
-          'prakriti': { 
-              title: 'What is Prakriti & Dosha?', 
-              text: `In Ayurveda, these three concepts are fundamental to understanding your unique makeup.\n\n• Doshas (Vata, Pitta, Kapha): These are the three primary life forces or energies that govern all physiological and psychological functions in the body. Everyone has a unique mix of the three, with one or two being dominant.\n\n• Prakriti: This is your unique, inherent constitution, determined at the moment of conception. It represents your natural balance of the doshas and remains constant throughout your life. Knowing your Prakriti helps in understanding your predispositions, strengths, and weaknesses, forming the basis for personalized diet and lifestyle choices.\n\n• Saara: This refers to the optimal quality, or essence, of your seven bodily tissues (Dhatus). A strong Saara indicates excellent health, immunity, and vitality. Assessing Saara helps in understanding the overall strength and resilience of your body.` 
+          'prakriti': {
+              title: 'What is Prakriti & Dosha?',
+              text: `In Ayurveda, these three concepts are fundamental to understanding your unique makeup.\n\n• Doshas (Vata, Pitta, Kapha): These are the three primary life forces or energies that govern all physiological and psychological functions in the body. Everyone has a unique mix of the three, with one or two being dominant.\n\n• Prakriti: This is your unique, inherent constitution, determined at the moment of conception. It represents your natural balance of the doshas and remains constant throughout your life. Knowing your Prakriti helps in understanding your predispositions, strengths, and weaknesses, forming the basis for personalized diet and lifestyle choices.\n\n• Saara: This refers to the optimal quality, or essence, of your seven bodily tissues (Dhatus). A strong Saara indicates excellent health, immunity, and vitality. Assessing Saara helps in understanding the overall strength and resilience of your body.`
           },
-          'mission': { 
-              title: 'My Mission', 
-              text: `My mission through SattvaGriha is to make the timeless wisdom of Ayurveda accessible and practical for everyone. I aim to demystify its principles and provide clear, actionable guidance that you can integrate into your daily life.\n\nBy focusing on root-cause analysis and personalized care based on Prakriti and Saara, I strive to help you move beyond temporary fixes and cultivate a state of true, sustainable well-being. My commitment is to be your dedicated guide on your journey toward a balanced, healthier, and more vibrant life.` 
+          'mission': {
+              title: 'My Mission',
+              text: `My mission through SattvaGriha is to make the timeless wisdom of Ayurveda accessible and practical for everyone. I aim to demystify its principles and provide clear, actionable guidance that you can integrate into your daily life.\n\nBy focusing on root-cause analysis and personalized care based on Prakriti and Saara, I strive to help you move beyond temporary fixes and cultivate a state of true, sustainable well-being. My commitment is to be your dedicated guide on your journey toward a balanced, healthier, and more vibrant life.`
           }
         };
 
+        const modals = document.querySelectorAll('.modal');
+        function openModal(modal) {
+            modal.style.display = 'block';
+            modal.setAttribute('aria-hidden', 'false');
+            modal.focus(); // Set focus to the modal for accessibility
+        }
+
+        function closeModal(modal) {
+            modal.style.display = 'none';
+            modal.setAttribute('aria-hidden', 'true');
+            // Return focus to the element that opened the modal (if possible)
+            document.activeElement.blur(); // Remove focus from the closed modal
+        }
+
         document.body.addEventListener('click', function(e) {
-            // Open modal trigger (e.g., from main content buttons or nav links)
             const openTrigger = e.target.closest('[data-modal-target]');
             if (openTrigger) {
+                e.preventDefault(); // Prevent default link/button action
                 const modalId = openTrigger.dataset.modalTarget;
                 const modal = document.getElementById(modalId);
-                if (modal) modal.style.display = 'block';
-                if (modalId === 'blog-modal') renderBlogIndex(); // Specific for blog modal
+                if (modal) {
+                    openModal(modal);
+                    if (modalId === 'blog-modal') renderBlogIndex(); // Specific for blog modal
+                }
             }
 
-            // Open info modal trigger (e.g., from side nav for "About Us" etc.)
             const infoTrigger = e.target.closest('[data-content]');
             if (infoTrigger) {
+                e.preventDefault();
                 const contentKey = infoTrigger.dataset.content;
                 const content = modalData[contentKey];
                 const infoModal = document.getElementById('info-modal');
                 if (content && infoModal) {
                     infoModal.querySelector('#modal-title').textContent = content.title;
                     infoModal.querySelector('#modal-text').textContent = content.text;
-                    infoModal.style.display = 'block';
+                    openModal(infoModal);
                 }
             }
 
-            // Close modal trigger
             const closeTrigger = e.target.closest('.close-modal');
             if (closeTrigger) {
-                closeTrigger.closest('.modal').style.display = 'none';
+                closeModal(closeTrigger.closest('.modal'));
             }
         });
-        
+
         // Close modal by clicking outside
         window.addEventListener('click', function(e) {
             if (e.target.classList.contains('modal')) {
-                e.target.style.display = 'none';
+                closeModal(e.target);
+            }
+        });
+
+        // Close modal with Escape key
+        window.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                modals.forEach(modal => {
+                    if (modal.style.display === 'block') {
+                        closeModal(modal);
+                    }
+                });
             }
         });
     }
@@ -807,6 +956,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 dots.style.display = "none";
                 moreText.style.display = "inline";
                 this.style.display = "none";
+                this.setAttribute('aria-expanded', 'true'); // Update aria-expanded
             });
         }
     }
@@ -860,16 +1010,18 @@ document.addEventListener("DOMContentLoaded", function() {
             appointmentForm.addEventListener('submit', function(event) {
                 event.preventDefault();
 
+                // Simple client-side validation
                 const name = document.getElementById('appt-name').value;
                 const age = document.getElementById('appt-age').value;
                 const genderEl = document.querySelector('input[name="gender"]:checked');
                 const nationalityEl = document.querySelector('input[name="nationality"]:checked');
                 const selectedPackage = planSelect.value;
                 const reason = document.getElementById('appt-reason').value;
-                
-                if (!genderEl) { alert('Please select your gender.'); return; }
-                if (!nationalityEl) { alert('Please select your nationality.'); return; }
-                if (!selectedPackage) { alert('Please select a plan.'); return; }
+
+                if (!name || !age || !genderEl || !nationalityEl || !selectedPackage || !reason) {
+                    alert('Please fill in all required fields (Name, Age, Gender, Nationality, Plan, Reason).');
+                    return;
+                }
 
                 const gender = genderEl.value;
                 const nationality = nationalityEl.value;
@@ -880,11 +1032,11 @@ document.addEventListener("DOMContentLoaded", function() {
                 message += `*Age:* ${age}\n`;
                 message += `*Gender:* ${gender}\n`;
                 message += `*Nationality:* ${nationality}\n`;
-                
+
                 if (consultationFee && consultationFee !== 'No Fee') {
                     message += `*Plan Fee:* ${consultationFee}\n`;
                 }
-                
+
                 message += `*Selected Plan:* ${selectedPackage}\n\n`;
                 message += `*Reason for Consultation:*\n${reason}\n\n`;
                 message += `*Additional Details:*\n${otherDetails || 'Not Provided'}`;
@@ -910,7 +1062,7 @@ document.addEventListener("DOMContentLoaded", function() {
         let maxScores = {};
         let userName = '';
         let prakritiChartInstance, saaraChartInstance;
-        let fullResultsText = ''; 
+        let fullResultsText = '';
         const assessmentModal = document.getElementById('assessment-modal');
         const welcomeScreen = document.getElementById('welcome-screen');
         const quizScreen = document.getElementById('quiz-screen');
@@ -931,7 +1083,7 @@ document.addEventListener("DOMContentLoaded", function() {
         function initializeScores() {
             scores = { prakriti: { vata: 0, pitta: 0, kapha: 0 }, saara: { rasa: 0, rakta: 0, mamsa: 0, meda: 0, asthi: 0, majja: 0, shukra: 0, sattva: 0 }};
             maxScores = { prakriti: { vata: 0, pitta: 0, kapha: 0 }, saara: { rasa: 0, rakta: 0, mamsa: 0, meda: 0, asthi: 0, majja: 0, shukra: 0, sattva: 0 }};
-            
+
             questions.forEach(q => {
                 const typeKey = q.type.toLowerCase();
                 if (maxScores[typeKey] && maxScores[typeKey][q.category] !== undefined) {
@@ -948,10 +1100,11 @@ document.addEventListener("DOMContentLoaded", function() {
             if (prakritiChartInstance) prakritiChartInstance.destroy();
             if (saaraChartInstance) saaraChartInstance.destroy();
             if(startQuizBtn) startQuizBtn.disabled = false;
+            progressBar.setAttribute('aria-valuenow', '0'); // Reset progress for accessibility
         }
 
         function startQuiz(event) {
-            event.preventDefault(); 
+            event.preventDefault();
             if(startQuizBtn) startQuizBtn.disabled = true;
             userName = document.getElementById('name').value || 'Guest';
             currentQuestionIndex = 0;
@@ -961,9 +1114,12 @@ document.addEventListener("DOMContentLoaded", function() {
             quizScreen.classList.remove('hidden');
             showQuestion();
         }
-        
+
         function showQuestion() {
-            if (currentQuestionIndex >= questions.length) { showResults(); return; }
+            if (currentQuestionIndex >= questions.length) {
+                showResults();
+                return;
+            }
             questionTitleEl.classList.remove('question-animated');
             optionsContainerEl.classList.remove('question-animated');
             const question = questions[currentQuestionIndex];
@@ -979,7 +1135,9 @@ document.addEventListener("DOMContentLoaded", function() {
                 questionTitleEl.classList.add('question-animated');
                 optionsContainerEl.classList.add('question-animated');
             }, 50);
-            progressBar.style.width = `${((currentQuestionIndex) / questions.length) * 100}%`;
+            const progress = ((currentQuestionIndex) / questions.length) * 100;
+            progressBar.style.width = `${progress}%`;
+            progressBar.setAttribute('aria-valuenow', progress.toFixed(0)); // Update aria-valuenow
         }
 
         window.recordAnswer = function(scoreValue) {
@@ -989,7 +1147,7 @@ document.addEventListener("DOMContentLoaded", function() {
             currentQuestionIndex++;
             showQuestion();
         }
-        
+
         function calculateAndDisplayResults() {
             const prakritiScores = scores.prakriti;
             const prakritiPercentages = {};
@@ -1002,7 +1160,12 @@ document.addEventListener("DOMContentLoaded", function() {
             const dominantPrakriti = findDominant(prakritiPercentages);
             document.getElementById('dominant-prakriti').textContent = dominantPrakriti;
             prakritiPercentagesEl.innerHTML = prakritiSummaryHtml;
-            createPieChart('prakriti-chart', prakritiPercentages, 'Prakriti Distribution', ['#4e79a7', '#f28e2b', '#59a14f']);
+
+            // Destroy existing chart instance if it exists
+            if (prakritiChartInstance) {
+                prakritiChartInstance.destroy();
+            }
+            prakritiChartInstance = createPieChart('prakriti-chart', prakritiPercentages, 'Prakriti Distribution', ['#4e79a7', '#f28e2b', '#59a14f']);
 
             const saaraScores = scores.saara;
             const saaraPercentages = {};
@@ -1017,13 +1180,17 @@ document.addEventListener("DOMContentLoaded", function() {
             const dominantSaara = findDominant(saaraPercentages);
             document.getElementById('dominant-saara').textContent = dominantSaara;
             saaraPercentagesEl.innerHTML = saaraSummaryHtml;
-            createPieChart('saara-chart', saaraPercentages, 'Saara Distribution', ['#e15759', '#76b7b2', '#edc948', '#ff9da7', '#9c755f', '#bab0ac', '#f17f42', '#b07aa1']);
 
-            let resultsForWhatsapp = `Hello! I've completed the assessment I'm, *${userName}*.\n\nHere are my results:\n\n`;
+            // Destroy existing chart instance if it exists
+            if (saaraChartInstance) {
+                saaraChartInstance.destroy();
+            }
+            saaraChartInstance = createPieChart('saara-chart', saaraPercentages, 'Saara Distribution', ['#e15759', '#76b7b2', '#edc948', '#ff9da7', '#9c755f', '#bab0ac', '#f17f42', '#b07aa1']);
+
+            let resultsForWhatsapp = `Hello! I've completed the assessment. I'm, *${userName}*.\n\nHere are my results:\n\n`;
             resultsForWhatsapp += `*Dominant Prakriti (Constitution):* ${dominantPrakriti}\n`;
             resultsForWhatsapp += `*Dominant Saara (Tissue Essence):* ${dominantSaara}\n\n`;
             resultsForWhatsapp += `--- DETAILED PERCENTAGES ---\n`;
-            resultsForWhatsapp += `*Prakriti Scores:*\n`;
             for (const dosha in prakritiPercentages) {
                 resultsForWhatsapp += `  - ${dosha.charAt(0).toUpperCase() + dosha.slice(1)}: ${prakritiPercentages[dosha].toFixed(1)}%\n`;
             }
@@ -1033,43 +1200,87 @@ document.addEventListener("DOMContentLoaded", function() {
                     resultsForWhatsapp += `  - ${saara.charAt(0).toUpperCase() + saara.slice(1)}: ${saaraPercentages[saara].toFixed(1)}%\n`;
                 }
             }
-            resultsForWhatsapp += `\nI would like to book a consultation  for further Consultation. Thank you!`;
+            resultsForWhatsapp += `\nI would like to book a consultation for further assistance. Thank you!`;
             fullResultsText = resultsForWhatsapp;
         }
 
         function findDominant(percentageObject) {
             let maxPercent = -1;
             let dominantItems = [];
-            for (const item in percentageObject) {consu
-                const percent = percentageObject[item];
+            // Filter out items with 0% before finding dominant to avoid "Balanced / Not enough data" if there's actual data
+            const filteredPercentages = Object.entries(percentageObject).filter(([, value]) => value > 0.1); // Small threshold for non-zero
+            if (filteredPercentages.length === 0) return "Not enough data to determine a dominant type.";
+
+            for (const [item, percent] of filteredPercentages) {
                 if (percent > maxPercent) {
                     maxPercent = percent;
                     dominantItems = [item];
-                } else if (percent > 0.1 && Math.abs(percent - maxPercent) < 1.0) { // Consider values within 1% as equally dominant
+                } else if (Math.abs(percent - maxPercent) < 1.0) { // Consider values within 1% as equally dominant
                     dominantItems.push(item);
                 }
             }
-            if (dominantItems.length === 0 || maxPercent <= 0) return "Balanced / Not enough data";
             return dominantItems.map(item => item.charAt(0).toUpperCase() + item.slice(1)).join(' / ');
         }
 
+
         function createPieChart(canvasId, percentageObject, title, colorPalette) {
             const ctx = document.getElementById(canvasId).getContext('2d');
-            const chartData = { labels: Object.keys(percentageObject).map(k => `${k.charAt(0).toUpperCase() + k.slice(1)}`), datasets: [{ data: Object.values(percentageObject), backgroundColor: colorPalette, borderColor: '#ffffff', borderWidth: 2 }] };
-            const chartInstance = new Chart(ctx, { type: 'pie', data: chartData, options: { responsive: true, animation: { animateScale: true, animateRotate: true }, plugins: { legend: { position: 'top' }, title: { display: true, text: title, font: { size: 16, weight: 'bold' } }, tooltip: { callbacks: { label: function(context) { return `${context.label}: ${context.parsed.toFixed(1)}%`; } } } } } });
-            if (canvasId === 'prakriti-chart') prakritiChartInstance = chartInstance; else if (canvasId === 'saara-chart') saaraChartInstance = chartInstance;
+            const filteredData = Object.entries(percentageObject).filter(([, value]) => value > 0.1); // Only show non-zero slices
+            const labels = filteredData.map(([key]) => `${key.charAt(0).toUpperCase() + key.slice(1)}`);
+            const data = filteredData.map(([, value]) => value);
+
+            const chartInstance = new Chart(ctx, {
+                type: 'pie',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        data: data,
+                        backgroundColor: colorPalette.slice(0, data.length),
+                        borderColor: '#ffffff',
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    animation: {
+                        animateScale: true,
+                        animateRotate: true
+                    },
+                    plugins: {
+                        legend: {
+                            position: 'top'
+                        },
+                        title: {
+                            display: true,
+                            text: title,
+                            font: {
+                                size: 16,
+                                weight: 'bold'
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return `${context.label}: ${context.parsed.toFixed(1)}%`;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+            return chartInstance; // Return the chart instance
         }
 
         function showResults() {
             quizScreen.classList.add('hidden');
             resultsContainer.classList.remove('hidden');
             resultsGreetingEl.textContent = `Dear ${userName}, your assessment results are:`;
-            calculateAndDisplayResults();
+            calculateAndDisplayResults(); // This function now handles chart creation/destruction
         }
-        
+
         if(userInfoForm) userInfoForm.addEventListener('submit', startQuiz);
         if(restartBtn) restartBtn.addEventListener('click', () => {
-            assessmentModal.style.display = 'block'; // Ensure modal is open if it was closed
+            // No need to ensure modal is block, as showWelcomeScreen will handle hiding/showing
             showWelcomeScreen();
         });
         if(printBtn) printBtn.addEventListener('click', () => { window.print(); });
@@ -1134,7 +1345,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 id: 'yoga', icon: 'fa-person-praying', title: "Yoga & Ayurveda – The Sister Sciences",
                 content: [
                     { heading: "Introduction", html: `<h3>The Union of Body, Mind & Soul</h3><p>Yoga and Ayurveda are inseparable sister sciences from ancient India. While Ayurveda focuses on healing the body and balancing the doshas, Yoga aims to quiet the mind and unite the individual consciousness with the universal.</p><blockquote class="shloka">“Yogash-chitta-vritti-nirodhah”<br/><em>– Patanjali Yoga Sutra 1.2</em><br/>(Yoga is the cessation of the fluctuations of the mind.)</blockquote>` },
-                    { heading: "Yoga for Doshas", html: `<h3>Tailoring Your Practice</h3><table><thead><tr><th>Dosha</th><th>Practice Style</th><th>Recommended Asanas</th></tr></thead><tbody><tr><td><strong>Vata</strong></td><td>Grounding, slow, warming, stable</td><td>Warrior poses, Tree Pose, seated forward bends</td></tr><tr><td><strong>Pitta</strong></td><td>Cooling, calming, non-competitive</td><td>Moon Salutations, twists, restorative poses</td></tr><tr><td><strong>Kapha</strong></td><td>Energizing, stimulating, dynamic</td><td>Sun Salutations, backbends, vinyasa flow</td></tr></tbody></table>` },
+                    { heading: "Yoga for Doshas", html: `<h3>Tailoring Your Practice</h3><table><thead><tr><th>Dosha</th><th>Practice Style</th><th>Recommended Asanas</th></tr></thead><tbody><tr><td><strong>Vata</strong></td><td>Grounding, slow, warming, stable</td><td>Warrior poses, Tree Pose, seated forward bends</td></tr><tr><td><strong>Pitta</strong></td><td>Cooling, calming, non-competitive</td><td>Moon Salutations, twists, restorative poses</td></tr><tr><td><strong>Kapha</strong></td><td>Energizing, stimulating, dynamic</td><td>Sun Salutations, backbends, vinyasa flow</td></tr></table>` },
                     { heading: "Benefits", html: `<h3>Holistic Gains</h3><ul><li>Improves flexibility, strength, and posture.</li><li>Calms the nervous system and reduces stress.</li><li>Enhances circulation and detoxifies organs.</li><li>Increases awareness and mental clarity.</li></ul>` },
                     { heading: "Contraindications", html: `<h3>When to Be Cautious</h3><ul><li><strong>Inversions (e.g., Headstand):</strong> Avoid during menstruation, high blood pressure, or glaucoma.</li><li><strong>Intense Backbends:</strong> Avoid with serious back injuries or spondylosis.</li><li><strong>Twists:</strong> Practice gently if you have herniated discs.</li><li><strong>General:</strong> Do not practice on a full stomach. Always listen to your body and never force a posture.</li></ul>` }
                 ]
@@ -1168,7 +1379,7 @@ document.addEventListener("DOMContentLoaded", function() {
             blogContentView.classList.add('hidden');
             let content = '<ul>';
             blogPosts.forEach(post => {
-                content += `<li><a href="#" class="blog-list-item" data-blog-id="${post.id}"><i class="fas ${post.icon}"></i> ${post.title}</a></li>`;
+                content += `<li><a href="#" class="blog-list-item" data-blog-id="${post.id}" aria-label="Read about ${post.title}"><i class="fas ${post.icon}" aria-hidden="true"></i> ${post.title}</a></li>`;
             });
             content += '</ul>';
             blogIndexView.innerHTML = content;
@@ -1182,27 +1393,29 @@ document.addEventListener("DOMContentLoaded", function() {
             blogModalTitle.textContent = 'Blog Article';
             blogIndexView.style.display = 'none';
             blogContentView.classList.remove('hidden');
-            
+
             blogPostTitleEl.textContent = post.title;
             blogTabsNavEl.innerHTML = '';
             blogTabContentContainerEl.innerHTML = '';
 
             post.content.forEach((section, index) => {
                 const tabId = `${post.id}-tab-${index}`;
-                const tabButton = `<button class="tab-link" data-tab-target="#${tabId}">${section.heading}</button>`;
-                const tabPane = `<div class="tab-pane" id="${tabId}">${section.html}</div>`;
+                const tabButton = `<button class="tab-link" role="tab" aria-selected="${index === 0 ? 'true' : 'false'}" aria-controls="${tabId}" data-tab-target="#${tabId}">${section.heading}</button>`;
+                const tabPane = `<div class="tab-pane" id="${tabId}" role="tabpanel" aria-labelledby="${tabId.replace('tab-', '')}" ${index === 0 ? '' : 'aria-hidden="true"'}>${section.html}</div>`;
                 blogTabsNavEl.innerHTML += tabButton;
                 blogTabContentContainerEl.innerHTML += tabPane;
             });
-            
+
             // Activate the first tab by default
             const firstTabLink = blogTabsNavEl.querySelector('.tab-link');
             const firstTabPane = blogTabContentContainerEl.querySelector('.tab-pane');
             if (firstTabLink && firstTabPane) {
                 firstTabLink.classList.add('active');
+                firstTabLink.setAttribute('aria-selected', 'true');
                 firstTabPane.classList.add('active');
+                firstTabPane.setAttribute('aria-hidden', 'false');
             }
-            
+
             blogModal.scrollTop = 0;
         }
 
@@ -1220,10 +1433,18 @@ document.addEventListener("DOMContentLoaded", function() {
             const link = e.target.closest('.tab-link');
             if (link) {
                 const targetId = link.dataset.tabTarget;
-                blogTabsNavEl.querySelectorAll('.tab-link').forEach(l => l.classList.remove('active'));
-                blogTabContentContainerEl.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+                blogTabsNavEl.querySelectorAll('.tab-link').forEach(l => {
+                    l.classList.remove('active');
+                    l.setAttribute('aria-selected', 'false');
+                });
+                blogTabContentContainerEl.querySelectorAll('.tab-pane').forEach(p => {
+                    p.classList.remove('active');
+                    p.setAttribute('aria-hidden', 'true');
+                });
                 link.classList.add('active');
+                link.setAttribute('aria-selected', 'true');
                 document.querySelector(targetId).classList.add('active');
+                document.querySelector(targetId).setAttribute('aria-hidden', 'false');
             }
         });
 
@@ -1239,4 +1460,4 @@ document.addEventListener("DOMContentLoaded", function() {
 </script>
 
 </body>
-</html>
+  </html>
