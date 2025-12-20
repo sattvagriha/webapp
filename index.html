@@ -2970,3 +2970,131 @@ function scrollToTop() {
 </script>
 </body>
 </html>
+<!-- ===== NIRAAMA ISOLATED POPUP ===== -->
+<style>
+/* FORCE ISOLATION */
+#niraama-overlay {
+  all: unset;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.65);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 99999;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+#niraama-popup {
+  all: unset;
+  background: #ffffff;
+  width: 92%;
+  max-width: 420px;
+  border-radius: 22px;
+  padding: 2.2rem 2rem;
+  text-align: center;
+  box-shadow: 0 30px 70px rgba(0,0,0,0.35);
+  animation: niraamaPop 0.45s ease forwards;
+  position: relative;
+}
+
+/* Dark mode support */
+body.dark-mode #niraama-popup {
+  background: #1e1e1e;
+  color: #eee;
+}
+
+/* Close button */
+#niraama-close {
+  position: absolute;
+  top: 12px;
+  right: 14px;
+  font-size: 32px;
+  font-weight: 600;
+  cursor: pointer;
+  color: #666;
+}
+
+/* Badge */
+#niraama-badge {
+  display: inline-block;
+  background: linear-gradient(135deg,#1b8f5a,#36c78a);
+  color: #fff;
+  padding: 6px 14px;
+  border-radius: 50px;
+  font-size: 13px;
+  margin-bottom: 1rem;
+}
+
+/* Text */
+#niraama-popup h2 {
+  font-size: 1.8rem;
+  margin-bottom: 0.4rem;
+  color: #1b5e20;
+  letter-spacing: 1px;
+}
+#niraama-popup h3 {
+  font-size: 1.1rem;
+  margin-bottom: 1rem;
+}
+#niraama-popup p {
+  font-size: 0.95rem;
+  line-height: 1.5;
+  margin-bottom: 1.2rem;
+}
+
+/* Offer */
+#niraama-offer {
+  background: #f1f8f4;
+  border-radius: 14px;
+  padding: 0.75rem;
+  font-weight: 600;
+  margin-bottom: 1.2rem;
+}
+
+/* Button */
+#niraama-btn {
+  display: block;
+  width: 100%;
+  background: linear-gradient(135deg,#25D366,#1ebe57);
+  color: #fff;
+  text-decoration: none;
+  padding: 0.55rem;
+  border-radius: 10px;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+@keyframes niraamaPop {
+  from { transform: scale(0.85); }
+  to { transform: scale(1); }
+}
+</style>
+
+<div id="niraama-overlay">
+  <div id="niraama-popup">
+    <div id="niraama-close" onclick="document.getElementById('niraama-overlay').remove()">×</div>
+
+    <div id="niraama-badge">🎉 1000+ Online Consultations</div>
+
+    <h2>NIRAAMA</h2>
+    <h3>🌿 1 Month FREE Consultation</h3>
+
+    <p>
+      Achieving <b>1000+ online consultations in just 4 months</b>,
+      we are offering <b>NIRAAMA – 1 Month Free Ayurvedic Consultation</b>.
+    </p>
+
+    <div id="niraama-offer">
+      Ends on <b>19th January</b>
+    </div>
+
+    <a
+      id="niraama-btn"
+      href="https://wa.me/916364514741?text=Namasthe%20🙏%0AI%20would%20like%20to%20consult%20under%20NIRAAMA"
+      target="_blank"
+    >
+      BOOK NOW
+    </a>
+  </div>
+</div>
