@@ -2997,21 +2997,8 @@ function scrollToTop() {
 }
 </style>
 
-<!-- 🌟🎆 NEW YEAR 2026 STAR + FIREWORK POPUP -->
+<!-- 🌟🎆 NEW YEAR 2026 POPUP START -->
 <style>
-/* ===== Overlay ===== */
-#ny2026-overlay{
-  position:fixed;
-  inset:0;
-  background:radial-gradient(circle at top,#0c2f2a,#000);
-  z-index:99999;
-  overflow:hidden;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  animation:fadeNY 1s ease;
-}
-
 /* ===== Stars ===== */
 .ny-star{
   position:absolute;
@@ -3056,6 +3043,19 @@ function scrollToTop() {
   100%{transform:scale(1.6);opacity:0}
 }
 
+/* ===== Overlay ===== */
+#ny2026-overlay{
+  position:fixed;
+  inset:0;
+  background:radial-gradient(circle at top,#0c2f2a,#000);
+  z-index:99999;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  overflow:hidden;
+  animation:fadeNY 1s ease;
+}
+
 /* ===== Popup Card ===== */
 #ny2026-box{
   background:linear-gradient(135deg,#004d40,#00796b,#26a69a);
@@ -3072,6 +3072,28 @@ function scrollToTop() {
 @keyframes popupIn{
   from{transform:scale(.75);opacity:0}
   to{transform:scale(1);opacity:1}
+}
+
+/* ===== GOLD SHINE HEADING ===== */
+.ny-gold{
+  background:linear-gradient(
+    120deg,
+    #b8860b 0%,
+    #ffeb3b 20%,
+    #fff8c4 40%,
+    #ffeb3b 60%,
+    #b8860b 100%
+  );
+  background-size:300% auto;
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  animation:goldShine 3s linear infinite;
+  text-shadow:0 0 12px rgba(255,215,0,.55);
+}
+
+@keyframes goldShine{
+  0%{background-position:0% center}
+  100%{background-position:300% center}
 }
 
 /* ===== Text ===== */
@@ -3149,7 +3171,7 @@ function scrollToTop() {
   <!-- Popup -->
   <div id="ny2026-box">
     <div id="ny2026-close">&times;</div>
-    <h2>✨ Happy New Year ✨</h2>
+    <h2>✨ <span class="ny-gold">Happy New Year</span> ✨</h2>
     <div id="ny2026-year">2026</div>
     <p>
       May this year bring <b>health, harmony, clarity & vitality</b> 🌿<br>
@@ -3172,4 +3194,4 @@ function scrollToTop() {
   document.getElementById("ny2026-close").onclick=closeNY2026;
 })();
 </script>
-<!-- 🌟🎆 NEW YEAR 2026 END -->
+<!-- 🌟🎆 NEW YEAR 2026 POPUP END -->
