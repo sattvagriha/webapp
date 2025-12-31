@@ -2997,7 +2997,7 @@ function scrollToTop() {
 }
 </style>
 
-<!-- 🌟🎆 NEW YEAR 2026 POPUP START -->
+    <!-- 🌟🎆 NEW YEAR 2026 POPUP START -->
 <style>
 /* ===== Stars ===== */
 .ny-star{
@@ -3074,7 +3074,7 @@ function scrollToTop() {
   to{transform:scale(1);opacity:1}
 }
 
-/* ===== GOLD SHINE HEADING ===== */
+/* ===== GOLD SHINE TEXT ===== */
 .ny-gold{
   background:linear-gradient(
     120deg,
@@ -3090,7 +3090,6 @@ function scrollToTop() {
   animation:goldShine 3s linear infinite;
   text-shadow:0 0 12px rgba(255,215,0,.55);
 }
-
 @keyframes goldShine{
   0%{background-position:0% center}
   100%{background-position:300% center}
@@ -3182,16 +3181,9 @@ function scrollToTop() {
 </div>
 
 <script>
-(function(){
-  const key="ny2026_seen";
-  if(localStorage.getItem(key)){
-    document.getElementById("ny2026-overlay").style.display="none";
-  }
-  window.closeNY2026=function(){
-    document.getElementById("ny2026-overlay").style.display="none";
-    localStorage.setItem(key,"yes");
-  };
-  document.getElementById("ny2026-close").onclick=closeNY2026;
-})();
+function closeNY2026(){
+  document.getElementById("ny2026-overlay").style.display="none";
+}
+document.getElementById("ny2026-close").onclick=closeNY2026;
 </script>
 <!-- 🌟🎆 NEW YEAR 2026 POPUP END -->
