@@ -2970,80 +2970,6 @@ function scrollToTop() {
 </script>
 </body>
 </html>
-<!-- ===== NIRAAMA ISOLATED POPUP ===== -->
-<style>
-/* FORCE ISOLATION */
-#niraama-overlay {
-  all: unset;
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.65);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 99999;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-}
-
-#niraama-popup {
-  all: unset;
-  background: #ffffff;
-  width: 92%;
-  max-width: 420px;
-  border-radius: 22px;
-  padding: 2.2rem 2rem;
-  text-align: center;
-  box-shadow: 0 30px 70px rgba(0,0,0,0.35);
-  animation: niraamaPop 0.45s ease forwards;
-  position: relative;
-}
-
-/* Dark mode support */
-body.dark-mode #niraama-popup {
-  background: #1e1e1e;
-  color: #eee;
-}
-
-/* Close button */
-#niraama-close {
-  position: absolute;
-  top: 12px;
-  right: 14px;
-  font-size: 32px;
-  font-weight: 600;
-  cursor: pointer;
-  color: #666;
-}
-
-/* Badge */
-#niraama-badge {
-  display: inline-block;
-  background: linear-gradient(135deg,#1b8f5a,#36c78a);
-  color: #fff;
-  padding: 6px 14px;
-  border-radius: 50px;
-  font-size: 13px;
-  margin-bottom: 1rem;
-}
-
-/* Text */
-#niraama-popup h2 {
-  font-size: 1.8rem;
-  margin-bottom: 0.4rem;
-  color: #1b5e20;
-  letter-spacing: 1px;
-}
-#niraama-popup h3 {
-  font-size: 1.1rem;
-  margin-bottom: 1rem;
-}
-#niraama-popup p {
-  font-size: 0.95rem;
-  line-height: 1.5;
-  margin-bottom: 1.2rem;
-}
-
-/* Offer */
 #niraama-offer {
   background: #f1f8f4;
   border-radius: 14px;
@@ -3071,30 +2997,179 @@ body.dark-mode #niraama-popup {
 }
 </style>
 
-<div id="niraama-overlay">
-  <div id="niraama-popup">
-    <div id="niraama-close" onclick="document.getElementById('niraama-overlay').remove()">×</div>
+<!-- 🌟🎆 NEW YEAR 2026 STAR + FIREWORK POPUP -->
+<style>
+/* ===== Overlay ===== */
+#ny2026-overlay{
+  position:fixed;
+  inset:0;
+  background:radial-gradient(circle at top,#0c2f2a,#000);
+  z-index:99999;
+  overflow:hidden;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  animation:fadeNY 1s ease;
+}
 
-    <div id="niraama-badge">🎉 1000+ Consultations</div>
+/* ===== Stars ===== */
+.ny-star{
+  position:absolute;
+  width:2px;
+  height:2px;
+  background:#fff;
+  border-radius:50%;
+  animation:twinkle 2.5s infinite ease-in-out;
+  opacity:.8;
+}
+@keyframes twinkle{
+  0%,100%{opacity:.3}
+  50%{opacity:1}
+}
 
-    <h2>NIRAAMA</h2>
-    <h3>🌿 1 Month FREE Consultation</h3>
+/* ===== Fireworks ===== */
+.firework{
+  position:absolute;
+  width:6px;
+  height:6px;
+  background:transparent;
+  border-radius:50%;
+  animation:explode 1.8s infinite ease-out;
+}
+.firework::before{
+  content:"";
+  position:absolute;
+  inset:-35px;
+  border-radius:50%;
+  box-shadow:
+    0 -25px gold,
+    0 25px gold,
+    25px 0 gold,
+    -25px 0 gold,
+    18px 18px #ff5722,
+    -18px 18px #ff5722,
+    18px -18px #4db6ac,
+    -18px -18px #4db6ac;
+}
+@keyframes explode{
+  0%{transform:scale(0);opacity:1}
+  100%{transform:scale(1.6);opacity:0}
+}
 
+/* ===== Popup Card ===== */
+#ny2026-box{
+  background:linear-gradient(135deg,#004d40,#00796b,#26a69a);
+  padding:34px 28px;
+  border-radius:20px;
+  max-width:440px;
+  width:90%;
+  text-align:center;
+  color:#fff;
+  box-shadow:0 25px 60px rgba(0,0,0,.55);
+  animation:popupIn .8s ease;
+  position:relative;
+}
+@keyframes popupIn{
+  from{transform:scale(.75);opacity:0}
+  to{transform:scale(1);opacity:1}
+}
+
+/* ===== Text ===== */
+#ny2026-box h2{
+  margin:0;
+  font-size:2.1rem;
+}
+#ny2026-year{
+  font-size:3.2rem;
+  font-weight:900;
+  color:#ffeb3b;
+  text-shadow:0 0 14px rgba(255,235,59,.9);
+  margin:10px 0;
+}
+#ny2026-box p{
+  font-size:1rem;
+  line-height:1.6;
+  opacity:.95;
+}
+
+/* ===== Button ===== */
+#ny2026-box button{
+  margin-top:20px;
+  background:#ffeb3b;
+  color:#004d40;
+  border:none;
+  padding:13px 30px;
+  border-radius:40px;
+  font-size:1rem;
+  font-weight:bold;
+  cursor:pointer;
+  transition:.3s;
+}
+#ny2026-box button:hover{
+  transform:translateY(-2px);
+  box-shadow:0 6px 18px rgba(0,0,0,.35);
+}
+
+/* ===== Close ===== */
+#ny2026-close{
+  position:absolute;
+  top:12px;
+  right:16px;
+  font-size:26px;
+  cursor:pointer;
+  opacity:.8;
+}
+#ny2026-close:hover{opacity:1}
+
+@keyframes fadeNY{
+  from{opacity:0}
+  to{opacity:1}
+}
+</style>
+
+<div id="ny2026-overlay">
+  <!-- Stars -->
+  <script>
+    for(let i=0;i<120;i++){
+      document.write(
+        `<span class="ny-star" style="
+          top:${Math.random()*100}%;
+          left:${Math.random()*100}%;
+          animation-delay:${Math.random()*3}s">
+        </span>`
+      );
+    }
+  </script>
+
+  <!-- Fireworks -->
+  <div class="firework" style="top:20%;left:30%;"></div>
+  <div class="firework" style="top:25%;left:70%;animation-delay:.6s"></div>
+  <div class="firework" style="top:40%;left:50%;animation-delay:1s"></div>
+
+  <!-- Popup -->
+  <div id="ny2026-box">
+    <div id="ny2026-close">&times;</div>
+    <h2>✨ Happy New Year ✨</h2>
+    <div id="ny2026-year">2026</div>
     <p>
-      Achieving <b>1000+ online consultations across the world in just 4 months</b>,
-      we are offering <b>NIRAAMA – 1 Month Free Consultation</b>.
+      May this year bring <b>health, harmony, clarity & vitality</b> 🌿<br>
+      Welcome to a new beginning with <b>SattvaGriha</b>.
     </p>
-
-    <div id="niraama-offer">
-      Ends on <b>19th January</b>
-    </div>
-
-    <a
-      id="niraama-btn"
-      href="https://wa.me/916364514741?text=Namasthe%20🙏%0AI%20would%20like%20to%20consult%20under%20NIRAAMA"
-      target="_blank"
-    >
-      BOOK NOW
-    </a>
+    <button onclick="closeNY2026()">Enter Website</button>
   </div>
 </div>
+
+<script>
+(function(){
+  const key="ny2026_seen";
+  if(localStorage.getItem(key)){
+    document.getElementById("ny2026-overlay").style.display="none";
+  }
+  window.closeNY2026=function(){
+    document.getElementById("ny2026-overlay").style.display="none";
+    localStorage.setItem(key,"yes");
+  };
+  document.getElementById("ny2026-close").onclick=closeNY2026;
+})();
+</script>
+<!-- 🌟🎆 NEW YEAR 2026 END -->
